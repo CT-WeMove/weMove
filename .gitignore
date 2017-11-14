@@ -1,2 +1,8 @@
 # React Native client's node_modules
 wemove/node_modules
+
+#virtual environment
+env/
+
+#pycache
+__pycache__/
