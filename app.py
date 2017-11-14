@@ -5,7 +5,16 @@ from models import db
 app = Flask(__name__)
 api = Api(app)
 
+POSTGRES = {
+    'user': 'postgres',
+    'pw': 'WeMove',
+    'db': 'wemove_primary',
+    'host': 'localhost',
+    'port': '5432',
+}
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
+%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
 
 
 # Drivers = {
@@ -41,7 +50,7 @@ class Driver(Resource):
         return task, 201
 
 
-# DriverList 
+# DriverList
 # shows a list of all Drivers, and lets you POST to add new tasks
 class DriverList (Resource):
     def get(self):
