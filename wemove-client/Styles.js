@@ -16,7 +16,8 @@ export const mainStyle = StyleSheet.create({
     'alignItems': 'center',
     justifyContent: 'center',
     width: 200,
-    borderRadius: 10
+    borderRadius: 10,
+    marginTop: 100
   },
   accentButtonText: {
     color: '#ffffff',
