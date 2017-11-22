@@ -25,7 +25,7 @@ class HomeScreen extends Component {
       .catch(console.error)
   }
   _onButtonPress = () => {
-    this.props.navigation.navigate('Home')
+    this.props.navigation.navigate('Map')
   }
   render() {
     return (

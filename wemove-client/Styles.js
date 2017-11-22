@@ -25,6 +25,16 @@ export const mainStyle = StyleSheet.create({
   }
 })
 
+export const mapStyles = StyleSheet.create({
+  destination: {
+    borderColor: 'gray',
+    borderWidth: 2,
+    backgroundColor: '#ffffff',
+    padding: 5,
+    width: '60%'
+  }
+})
+
 export const logoStyle = StyleSheet.create({
   container: {
     height: '30%',

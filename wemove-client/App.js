@@ -1,14 +1,17 @@
-import React, { Component } from 'react'
 import { StackNavigator } from 'react-navigation'
 
 import HomeScreen from './components/Home'
-import Destination from './components/Destination'
+import Map from './components/Map'
+import PickVehicle from './components/PickVehicle'
 
 export default StackNavigator({
   Home: {
     screen: HomeScreen
   },
-  Destination: {
-    screen: Destination
+  Map: {
+    screen: Map
+  },
+  PickVehicle: {
+    screen: PickVehicle
   }
 })
