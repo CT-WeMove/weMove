@@ -17,6 +17,7 @@ class PickVehicle extends Component {
         <Text>Your destination:</Text>
         <Text>{state.params.destination}</Text>
         <PickupBIG />
+        <Carousel />
       </View>
     )
   }
