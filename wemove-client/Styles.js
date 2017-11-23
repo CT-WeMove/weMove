@@ -13,7 +13,7 @@ export const mainStyle = StyleSheet.create({
     backgroundColor: '#50A7A0',
     display: 'flex',
     flexDirection: 'column',
-    'alignItems': 'center',
+    alignItems: 'center',
     justifyContent: 'center',
     width: 200,
     borderRadius: 10,
@@ -26,12 +26,18 @@ export const mainStyle = StyleSheet.create({
 })
 
 export const mapStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
   destination: {
-    borderColor: 'gray',
-    borderWidth: 2,
+    borderColor: 'darkslategray',
+    borderWidth: 1,
     backgroundColor: '#ffffff',
-    padding: 5,
-    width: '60%'
+    padding: 10,
+    width: '70%',
+    position: 'absolute',
+    top: '30%'
   }
 })
 

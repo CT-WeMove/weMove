@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
 
+import Carousel from './Carousel'
+
 import PickupBIG from './vehicles/PickupBIG'
 
 class PickVehicle extends Component {

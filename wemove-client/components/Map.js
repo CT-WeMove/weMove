@@ -68,7 +68,7 @@ export default class Map extends Component {
   render() {
     return (
       <MapView
-        style={{ flex: 1 }}
+        style={mapStyles.container}
         showsUserLocation={true}
         region={this.state.region}
       >
@@ -77,6 +77,10 @@ export default class Map extends Component {
           value={this.state.destination}
           onChangeText={(destination) => this.setState({ destination })}
           onSubmitEditing={this._submitDestination}
+          shadowColor='#888888'
+          shadowOffset={{width: 10, height: 10}}
+          shadowOpacity='50'
+          shadowRadius='5'
         />
       </MapView>
     )
