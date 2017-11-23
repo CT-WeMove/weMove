@@ -57,3 +57,4 @@ export const logoStyle = StyleSheet.create({
     fontSize: Number(30)
   },
 })
+

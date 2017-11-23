@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { logoStyle } from '../Styles'
+import { logoStyle } from '../Styles/Styles'
 
 import Svg, {
   G,

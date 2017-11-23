@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Expo from 'expo'
 import { Text, View } from 'react-native'
 
-import { mainStyle } from '../Styles'
+import { mainStyle } from '../Styles/Styles'
 import LogoSVG from './LogoSVG'
 import CustomButton from './CustomButton'
 

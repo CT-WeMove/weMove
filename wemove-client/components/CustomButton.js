@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { TouchableOpacity, View, Text } from 'react-native'
 
-import { mainStyle } from '../Styles'
+import { mainStyle } from '../Styles/Styles'
 
 class CustomButton extends Component {
   constructor() {

@@ -3,20 +3,21 @@ import Carousel, { Pagination } from 'react-native-snap-carousel'
 import { View, Text, ScrollView } from 'react-native'
 
 import { ENTRIES } from './PickVehicleEntries'
+import { sliderWidth, itemWidth } from '../Styles/CarouselStyles';
 
 class VehicleCarousel extends Component {
   constructor() {
     super()
     this.state = {
-      entries: ENTRIES,
       activeSlide: 1,
-      slider1Ref: null
+      sliderRef: null
     }
   }
   _renderItem({ item, index }) {
     return (
       <View>
         <Text>{item.title}</Text>
+        {item.svg ? item.svg : null}
       </View>
     );
   }
@@ -24,21 +25,24 @@ class VehicleCarousel extends Component {
     return (
       <ScrollView>
         <Carousel
-          ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }) } }}
-          data={this.state.entries}
+          ref={(c) => { if (!this.state.sliderRef) { this.setState({ sliderRef: c }) } }}
+          data={ENTRIES}
           renderItem={this._renderItem}
-          sliderWidth={90}
-          itemWidth={80}
+          sliderWidth={sliderWidth}
+          itemWidth={itemWidth}
+          inactiveSlideScale={0.94}
+          inactiveSlideOpacity={0.7}
+          onSnapToItem={(index) => this.setState({ activeSlide: index })}
         />
         <Pagination
-          dotsLength={this.state.entries.length}
+          dotsLength={ENTRIES.length}
           activeDotIndex={this.state.activeSlide}
           dotColor={'rgba(255, 255, 255, 0.92)'}
           inactiveDotColor="#000000"
           inactiveDotOpacity={0.4}
           inactiveDotScale={0.6}
-          carouselRef={this.state.slider1Ref}
-          tappableDots={!!this.state.slider1Ref}
+          carouselRef={this.state.sliderRef}
+          tappableDots={!!this.state.sliderRef}
         />
       </ScrollView>
     );
