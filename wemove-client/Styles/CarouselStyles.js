@@ -14,13 +14,14 @@ function wp(percentage) {
   return Math.round(value);
 }
 const slideHeight = viewportHeight * 0.4
-  , slideWidth = wp(75)
+  , slideWidth = wp(70)
   , itemHorizontalMargin = wp(1);
 
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
-const entryBorderRadius = 8;
+const entryBorderRadius = 8
+  , slidePadding = 18;
 
 export default StyleSheet.create({
   slideInnerContainer: {
@@ -28,7 +29,9 @@ export default StyleSheet.create({
     width: itemWidth,
     height: slideHeight,
     paddingHorizontal: itemHorizontalMargin,
-    paddingBottom: 18, // needed for shadow,
+    paddingTop: slidePadding,
+    paddingBottom: slidePadding, // needed for shadow,
+    justifyContent: 'center',
     alignItems: 'center'
   },
   // imageContainer: {
@@ -71,11 +74,26 @@ export default StyleSheet.create({
   // textContainerEven: {
   //   backgroundColor: colors.black
   // },
+  svgContainer: {
+    paddingTop: slidePadding,
+    paddingBottom: slidePadding
+  },
   title: {
     color: colors.black,
     fontSize: 20,
-    fontWeight: 'bold',
     letterSpacing: 0.5,
-    paddingBottom: 10
+  },
+  subtitle: {
+    color: colors.gray,
+    fontSize: 10,
+    letterSpacing: 0.5,
+    paddingBottom: slidePadding
+  },
+  hr: {
+    borderBottomWidth: 1,
+    borderBottomColor: colors.black,
+    width: itemWidth * 0.75,
+    marginTop: slidePadding,
+    marginBottom: slidePadding
   }
 })

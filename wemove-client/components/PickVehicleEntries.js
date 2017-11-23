@@ -8,18 +8,26 @@ import MovingTruckBIG from './vehicles/MovingTruckBIG'
 export const ENTRIES = [
   {
     title: 'Pickup Truck',
-    svg: (<PickupBIG />)
+    svg: (<PickupBIG />),
+    price: '$24.00',
+    rate: '$10 base + $2 / mile'
   },
   {
     title: 'Cargo Van',
-    svg: (<CargoBIG />)
+    svg: (<CargoBIG />),
+    price: '$26.00',
+    rate: '$12 base + $2 / mile'
   },
   {
     title: 'Box Truck',
-    svg: (<BoxTruckBIG />)
+    svg: (<BoxTruckBIG />),
+    price: '$44.00',
+    rate: '$20 base + $2 / mile'
   },
   {
     title: 'Moving Truck',
-    svg: (<MovingTruckBIG />)
+    svg: (<MovingTruckBIG />),
+    price: '$64.00',
+    rate: '$40 base + $2 / mile'
   }
 ]
