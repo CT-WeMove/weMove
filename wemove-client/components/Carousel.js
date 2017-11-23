@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import Carousel, { Pagination } from 'react-native-snap-carousel'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 
 import { ENTRIES } from './PickVehicleEntries'
-import { sliderWidth, itemWidth } from '../Styles/CarouselStyles';
+import CarouselStyles, { sliderWidth, itemWidth } from '../Styles/CarouselStyles';
 
 class VehicleCarousel extends Component {
   constructor() {
@@ -15,36 +15,26 @@ class VehicleCarousel extends Component {
   }
   _renderItem({ item, index }) {
     return (
-      <View>
-        <Text>{item.title}</Text>
+      <TouchableOpacity style={CarouselStyles.slideInnerContainer}>
+        <Text style={CarouselStyles.title}>{item.title}</Text>
         {item.svg ? item.svg : null}
-      </View>
+      </TouchableOpacity>
     );
   }
   render() {
     return (
-      <ScrollView>
+      <View>
         <Carousel
-          ref={(c) => { if (!this.state.sliderRef) { this.setState({ sliderRef: c }) } }}
+          ref={c => { this._carousel = c }}
           data={ENTRIES}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
-          inactiveSlideScale={0.94}
+          inactiveSlideScale={0.8}
           inactiveSlideOpacity={0.7}
-          onSnapToItem={(index) => this.setState({ activeSlide: index })}
+          onPress={() => { this._carousel.snapToItem(this._carousel.currentIndex) }}
         />
-        <Pagination
-          dotsLength={ENTRIES.length}
-          activeDotIndex={this.state.activeSlide}
-          dotColor={'rgba(255, 255, 255, 0.92)'}
-          inactiveDotColor="#000000"
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
-          carouselRef={this.state.sliderRef}
-          tappableDots={!!this.state.sliderRef}
-        />
-      </ScrollView>
+      </View>
     );
   }
 }
