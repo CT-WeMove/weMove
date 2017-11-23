@@ -15,13 +15,6 @@ class VehicleCarousel extends Component {
       sliderRef: null,
       selectedVehicle: 'None yet!'
     }
-    this.requestVehicle = this.requestVehicle.bind(this)
-  }
-  requestVehicle(selectedVehicle) {
-    //TK: backend logic to send choice to server
-    this.setState({
-      selectedVehicle
-    })
   }
   _renderItem({ item, index }) {
     return (
@@ -61,8 +54,8 @@ class VehicleCarousel extends Component {
           }}
         />
         <CustomButton
-          _onButtonPress={() => this.requestVehicle(ENTRIES[this.state.activeSlide].title)}
-          text={`Request a ${ENTRIES[this.state.activeSlide].title}`}
+          _onButtonPress={() => this.props.requestVehicle(ENTRIES[this.state.activeSlide])}
+          text={`REQUEST A ${ENTRIES[this.state.activeSlide].title.toUpperCase()}`}
         />
         <Text>
           {this.state.selectedVehicle}

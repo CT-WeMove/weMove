@@ -15,7 +15,7 @@ export const mainStyle = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 200,
+    width: 300,
     borderRadius: 10,
     marginTop: 100
   },
