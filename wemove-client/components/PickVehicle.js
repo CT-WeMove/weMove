@@ -1,15 +1,26 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
+import Carousel from 'react-native-snap-carousel'
+
 
 import { mainStyle } from '../Styles/Styles'
-import Carousel from './Carousel'
+import CarouselStyles, { sliderWidth, itemWidth } from '../Styles/CarouselStyles';
+
+import PickupBIG from './vehicles/PickupBIG'
+import CargoBIG from './vehicles/CargoBIG'
+import BoxTruckBIG from './vehicles/BoxTruckBIG'
+import MovingTruckBIG from './vehicles/MovingTruckBIG'
+import CustomButton from './CustomButton'
 
 class PickVehicle extends Component {
   constructor() {
     super()
     this.state = {
       destination: 'Destination should go here.',
-      entries: {}
+      entries: {},
+      mileage: 0,
+      activeSlide: 0,
+      sliderRef: null
     }
     this.requestVehicle = this.requestVehicle.bind(this)
   }
@@ -17,22 +28,86 @@ class PickVehicle extends Component {
     //TK: backend logic to send choice to server
     this.props.navigation.navigate('DriverMatched', { vehicle })
   }
-  componentWillMount() {
-    const { state } = this.props.navigation
+  _renderItem({ item, index }) {
+    return (
+      <TouchableOpacity style={CarouselStyles.slideInnerContainer}>
+
+        <Text style={CarouselStyles.title}>{item.title}</Text>
+        <View style={CarouselStyles.svgContainer}>
+          {item.svg ? item.svg : null}
+        </View>
+
+        <View style={CarouselStyles.hr} />
+
+        <Text style={CarouselStyles.title}>${item.total}.00</Text>
+        <Text style={CarouselStyles.subtitle}>${item.base} base + ${item.per_mile} / mile</Text>
+
+      </TouchableOpacity>
+    );
+  }
+  componentDidMount() {
+    const { state } = this.props.navigation;
+    const entries = Object.keys(state.params.entries).map(title => Object.assign({ title }, state.params.entries[title]))
+    , newEntries = entries.map(entry => {
+      switch (entry.title) {
+        case 'Pickup Truck':
+          entry.svg = (<PickupBIG />)
+          break
+        case 'Cargo Van':
+          entry.svg = (<CargoBIG />)
+          break
+        case 'Box Truck':
+          entry.svg = (<BoxTruckBIG />)
+          break
+        case 'Moving Truck':
+          entry.svg = (<MovingTruckBIG />)
+          break
+        default:
+          return entry
+      }
+      return entry
+    })
     this.setState({
       destination: state.params.destination,
-      entries: state.params.entries
+      entries: newEntries,
+      mileage: state.params.mileage
     })
   }
   render() {
     return (
       <View style={mainStyle.container}>
-        <Text>Your destination:</Text>
-        <Text>{this.state.destination}, which is {this.state.distance} miles away.</Text>
-        <Carousel
-          requestVehicle={this.requestVehicle}
-          entries={this.state.entries}
-        />
+        {
+          Array.isArray(this.state.entries) ? (
+            <View style={mainStyle.container}>
+              <Text style={CarouselStyles.title}>{this.state.destination} is {this.state.mileage} miles away.</Text>
+              <View style={CarouselStyles.hr} />
+              <Text style={mainStyle.sectionHeading}>SELECT A VEHICLE</Text>
+              <Carousel
+                ref={c => { this._carousel = c }}
+                data={this.state.entries}
+                renderItem={this._renderItem}
+                sliderWidth={sliderWidth}
+                itemWidth={itemWidth}
+                inactiveSlideScale={0.8}
+                inactiveSlideOpacity={0.7}
+                onPress={() => {
+                  this._carousel.snapToItem(this._carousel.currentIndex)
+                }}
+                onSnapToItem={() => {
+                  this.setState({
+                    activeSlide: this._carousel.currentIndex
+                  })
+                }}
+              />
+              <View style={CarouselStyles.buttonContainer}>
+                <CustomButton
+                  _onButtonPress={() => this.state.requestVehicle(this.state.entries[this.state.activeSlide])}
+                  text={`REQUEST A ${this.state.entries[this.state.activeSlide].title.toUpperCase()}`}
+                />
+              </View>
+            </View>
+          ) : null
+        }
       </View>
     )
   }

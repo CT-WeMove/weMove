@@ -97,5 +97,8 @@ export default StyleSheet.create({
     width: itemWidth * 0.75,
     marginTop: slidePadding,
     marginBottom: slidePadding
+  },
+  buttonContainer: {
+    marginTop: 50
   }
 })

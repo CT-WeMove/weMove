@@ -2,9 +2,12 @@ import { StyleSheet, Dimensions, Platform } from 'react-native'
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-
 export const mainStyle = StyleSheet.create({
   container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

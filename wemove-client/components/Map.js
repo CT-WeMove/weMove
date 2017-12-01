@@ -49,7 +49,8 @@ export default class Map extends Component {
     this.setState({ location, region })
   }
   _submitDestination = () => {
-    axios.post('http://127.0.0.1:5000/api/drivers', {
+    /* TK when server is hooked in
+    axios.post('<APP ADDRESS>/api/drivers', {
       'current': {
         latitude: this.state.location.coords.latitude,
         longitude: this.state.location.coords.longitude
@@ -60,10 +61,19 @@ export default class Map extends Component {
       console.log('response: ', res.data)
       this.props.navigation.navigate('PickVehicle', {
         destination: this.state.destination,
-        entries: res.data
+        entries: res.data.entries,
+        mileage: res.data.mileage
       })
     })
     .catch(console.error)
+    */
+
+    this.props.navigation.navigate('PickVehicle', {
+      destination: this.state.destination,
+      entries: ENTRIES,
+      mileage: 0
+    })
+
 
     /*
     Geocoder.getFromLocation(destination)
@@ -102,4 +112,3 @@ export default class Map extends Component {
     )
   }
 }
-
