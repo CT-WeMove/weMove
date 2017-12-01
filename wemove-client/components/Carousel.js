@@ -4,7 +4,13 @@ import { View, Text, TouchableOpacity } from 'react-native'
 
 import CustomButton from './CustomButton'
 
-import { ENTRIES } from './PickVehicleEntries'
+import { ENTRIES } from './PickVehicleEntries' //fake data
+
+import PickupBIG from './vehicles/PickupBIG'
+import CargoBIG from './vehicles/CargoBIG'
+import BoxTruckBIG from './vehicles/BoxTruckBIG'
+import MovingTruckBIG from './vehicles/MovingTruckBIG'
+
 import CarouselStyles, { sliderWidth, itemWidth } from '../Styles/CarouselStyles';
 
 class VehicleCarousel extends Component {
@@ -13,8 +19,35 @@ class VehicleCarousel extends Component {
     this.state = {
       activeSlide: 0,
       sliderRef: null,
-      selectedVehicle: 'None yet!'
+      entries: ENTRIES
     }
+  }
+  componentWillMount() {
+    const mileage = Number(this.props.mileage) //to send
+      , entries = Object.keys(ENTRIES).map(title => Object.assign({ title }, ENTRIES[title]))
+      , newEntries = entries.map(entry => {
+        switch (entry) {
+          case 'Pickup Truck':
+            entry.svg = (<PickupBIG />)
+            break
+          case 'Cargo Van':
+            entry.svg = (<CargoBIG />)
+            break
+          case 'Box Truck':
+            entry.svg = (<BoxTruckBIG />)
+            break
+          case 'Moving Truck':
+            entry.svg = (<MovingTruckBIG />)
+            break
+          default:
+            return entry
+        }
+        return entry
+      })
+    console.log('newEntries', newEntries)
+    this.setState({
+      entries: newEntries
+    })
   }
   _renderItem({ item, index }) {
     return (
@@ -27,8 +60,8 @@ class VehicleCarousel extends Component {
 
         <View style={CarouselStyles.hr} />
 
-        <Text style={CarouselStyles.title}>{item.price}</Text>
-        <Text style={CarouselStyles.subtitle}>{item.rate}</Text>
+        <Text style={CarouselStyles.title}>${item.total}.00</Text>
+        <Text style={CarouselStyles.subtitle}>${item.base} base + ${item.per_mile} / mile</Text>
 
       </TouchableOpacity>
     );
@@ -38,7 +71,7 @@ class VehicleCarousel extends Component {
       <View>
         <Carousel
           ref={c => { this._carousel = c }}
-          data={ENTRIES}
+          data={this.state.entries}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -54,12 +87,9 @@ class VehicleCarousel extends Component {
           }}
         />
         <CustomButton
-          _onButtonPress={() => this.props.requestVehicle(ENTRIES[this.state.activeSlide])}
-          text={`REQUEST A ${ENTRIES[this.state.activeSlide].title.toUpperCase()}`}
+          _onButtonPress={() => this.props.requestVehicle(this.state.entries[this.state.activeSlide])}
+          text={`REQUEST A ${this.state.entries[this.state.activeSlide].title.toUpperCase()}`}
         />
-        <Text>
-          {this.state.selectedVehicle}
-        </Text>
       </View>
     );
   }

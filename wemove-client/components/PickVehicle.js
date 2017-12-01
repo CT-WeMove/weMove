@@ -6,21 +6,30 @@ import Carousel from './Carousel'
 class PickVehicle extends Component {
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      destination: 'Destination should go here.',
+      distance: '3.1'
+    }
     this.requestVehicle = this.requestVehicle.bind(this)
   }
   requestVehicle(vehicle) {
     //TK: backend logic to send choice to server
     this.props.navigation.navigate('DriverMatched', { vehicle })
   }
-  render() {
+  componentWillMount() {
     const { state } = this.props.navigation
+    this.setState({
+      destination: state.params.destination
+    })
+  }
+  render() {
     return (
       <View>
         <Text>Your destination:</Text>
-        <Text>{state.params.destination}</Text>
+        <Text>{this.state.destination}, which is {this.state.distance} miles away.</Text>
         <Carousel
           requestVehicle={this.requestVehicle}
+          mileage={this.state.distance}
         />
       </View>
     )
