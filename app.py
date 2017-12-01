@@ -74,9 +74,14 @@ class DriverList (Resource):
     def post(self):
         data = request.get_json()
         currentLoc = gmaps.reverse_geocode(data['current'])
+
+        # Todo: write current location to users table
+        Users[LOGGED_IN_USER]['location'] = currentLoc[0]['formatted_address']
+
         dist = gmaps.distance_matrix(currentLoc[0]['formatted_address'], data['destination'], mode='driving')
         dist_in_miles = dist['rows'][0]['elements'][0]['distance']['value'] * 0.000621371
 
+        # Todo: need to query drivers table and get the nearest driver based on location
         pickupId = '1'
         cargoId = '2'
         boxId = '3'
@@ -88,38 +93,40 @@ class DriverList (Resource):
         moving = Drivers[movingId]
 
         resp = {
-            'Pickup Truck':
-                {
-                    'id': int(pickupId),
-                    'total': str(format(float(pickup['price_base'])+dist_in_miles*float(pickup['price_per_mile']), '.2f')),
-                    'base': str(format(float(pickup['price_base']), '.0f')),
-                    'per_mile': str(format(float(pickup['price_per_mile']), '.0f'))
-                }
-            ,
-            'Cargo Van':
-                {
-                    'id': int(cargoId),
-                    'total': str(format(float(cargo['price_base'])+dist_in_miles*float(cargo['price_per_mile']), '.2f')),
-                    'base': str(format(float(cargo['price_base']), '.0f')),
-                    'per_mile': str(format(float(cargo['price_per_mile']), '.0f'))
-                }
-            ,
-            'Box Truck':
-                {
-                    'id': int(boxId),
-                    'total': str(format(float(box['price_base'])+dist_in_miles*float(box['price_per_mile']), '.2f')),
-                    'base': str(format(float(box['price_base']), '.0f')),
-                    'per_mile': str(format(float(box['price_per_mile']), '.0f'))
-                }
-            ,
-            'Moving Truck':
-                {
-                    'id': int(movingId),
-                    'total': str(format(float(moving['price_base'])+dist_in_miles*float(moving['price_per_mile']), '.2f')),
-                    'base': str(format(float(moving['price_base']), '.0f')),
-                    'per_mile': str(format(float(moving['price_per_mile']), '.0f'))
-                }
-            ,
+            'mileage' : format(float(dist_in_miles), '.1f'),
+            'vehicles' : {
+                'Pickup Truck':
+                    {
+                        'id': int(pickupId),
+                        'total': format(float(pickup['price_base'])+dist_in_miles*float(pickup['price_per_mile']), '.2f'),
+                        'base': format(float(pickup['price_base']), '.0f'),
+                        'per_mile': format(float(pickup['price_per_mile']), '.0f')
+                    }
+                ,
+                'Cargo Van':
+                    {
+                        'id': int(cargoId),
+                        'total': format(float(cargo['price_base'])+dist_in_miles*float(cargo['price_per_mile']), '.2f'),
+                        'base': format(float(cargo['price_base']), '.0f'),
+                        'per_mile': format(float(cargo['price_per_mile']), '.0f')
+                    }
+                ,
+                'Box Truck':
+                    {
+                        'id': int(boxId),
+                        'total': format(float(box['price_base'])+dist_in_miles*float(box['price_per_mile']), '.2f'),
+                        'base': format(float(box['price_base']), '.0f'),
+                        'per_mile': format(float(box['price_per_mile']), '.0f')
+                    }
+                ,
+                'Moving Truck':
+                    {
+                        'id': int(movingId),
+                        'total': format(float(moving['price_base'])+dist_in_miles*float(moving['price_per_mile']), '.2f'),
+                        'base': format(float(moving['price_base']), '.0f'),
+                        'per_mile': format(float(moving['price_per_mile']), '.0f')
+                    }
+            }
         }
 
         return resp
