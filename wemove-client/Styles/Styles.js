@@ -1,0 +1,65 @@
+import { StyleSheet, Dimensions, Platform } from 'react-native'
+
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+
+
+export const mainStyle = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: viewportHeight * 0.8 //REMEMBER TO FIX IF TESTING NOT ON EXPO
+  },
+  accentButtonView: {
+    backgroundColor: '#50A7A0',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: viewportWidth * 0.75,
+    borderRadius: 10,
+  },
+  accentButtonText: {
+    color: '#ffffff',
+    padding: 10
+  },
+  sectionHeading: {
+    color: 'darkslategray',
+    padding: 18
+  }
+})
+
+export const mapStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  destination: {
+    borderColor: 'darkslategray',
+    borderWidth: 1,
+    backgroundColor: '#ffffff',
+    padding: 10,
+    width: '70%',
+    position: 'absolute',
+    top: '30%'
+  }
+})
+
+export const logoStyle = StyleSheet.create({
+  container: {
+    height: viewportHeight * 0.3,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 50
+  },
+  wordmark: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'black',
+    fontFamily: 'Bauhaus93',
+    fontSize: Number(30),
+  },
+})
