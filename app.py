@@ -73,7 +73,8 @@ class DriverList (Resource):
 
     def post(self):
         data = request.get_json()
-        dist = gmaps.distance_matrix(data['current'], data['destination'], mode='driving')
+        currentLoc = gmaps.reverse_geocode(data['current'])
+        dist = gmaps.distance_matrix(currentLoc[0]['formatted_address'], data['destination'], mode='driving')
         dist_in_miles = dist['rows'][0]['elements'][0]['distance']['value'] * 0.000621371
 
         pickupId = '1'
