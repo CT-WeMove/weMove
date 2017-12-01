@@ -1,13 +1,15 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native'
+
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+
 
 export const mainStyle = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100%'
+    height: viewportHeight * 0.8 //REMEMBER TO FIX IF TESTING NOT ON EXPO
   },
   accentButtonView: {
     backgroundColor: '#50A7A0',
@@ -15,13 +17,16 @@ export const mainStyle = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 300,
+    width: viewportWidth * 0.75,
     borderRadius: 10,
-    marginTop: 100
   },
   accentButtonText: {
     color: '#ffffff',
     padding: 10
+  },
+  sectionHeading: {
+    color: 'darkslategray',
+    padding: 18
   }
 })
 
@@ -43,18 +48,18 @@ export const mapStyles = StyleSheet.create({
 
 export const logoStyle = StyleSheet.create({
   container: {
-    height: '30%',
+    height: viewportHeight * 0.3,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 50
   },
   wordmark: {
     alignItems: 'center',
     justifyContent: 'center',
     color: 'black',
     fontFamily: 'Bauhaus93',
-    fontSize: Number(30)
+    fontSize: Number(30),
   },
 })
-

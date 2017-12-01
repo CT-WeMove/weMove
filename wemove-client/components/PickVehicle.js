@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
 
+import { mainStyle } from '../Styles/Styles'
 import Carousel from './Carousel'
 
 class PickVehicle extends Component {
@@ -24,7 +25,7 @@ class PickVehicle extends Component {
   }
   render() {
     return (
-      <View>
+      <View style={mainStyle.container}>
         <Text>Your destination:</Text>
         <Text>{this.state.destination}, which is {this.state.distance} miles away.</Text>
         <Carousel

@@ -13,7 +13,7 @@ class HomeScreen extends Component {
       fontLoaded: false
     }
   }
-  componentDidMount() {
+  componentWillMount() {
     Expo.Font.loadAsync({
       'Bauhaus93': require('../assets/Bauhaus-93_6274.ttf')
     })

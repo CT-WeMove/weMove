@@ -13,7 +13,7 @@ function wp(percentage) {
   const value = (percentage * viewportWidth) / 100;
   return Math.round(value);
 }
-const slideHeight = viewportHeight * 0.4
+const slideHeight = viewportHeight * 0.5
   , slideWidth = wp(70)
   , itemHorizontalMargin = wp(1);
 
@@ -82,12 +82,14 @@ export default StyleSheet.create({
     color: colors.black,
     fontSize: 20,
     letterSpacing: 0.5,
+    marginTop: slidePadding,
+    marginBottom: slidePadding
   },
   subtitle: {
     color: colors.gray,
     fontSize: 10,
     letterSpacing: 0.5,
-    paddingBottom: slidePadding
+    marginBottom: slidePadding
   },
   hr: {
     borderBottomWidth: 1,

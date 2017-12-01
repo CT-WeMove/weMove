@@ -12,6 +12,8 @@ import BoxTruckBIG from './vehicles/BoxTruckBIG'
 import MovingTruckBIG from './vehicles/MovingTruckBIG'
 
 import CarouselStyles, { sliderWidth, itemWidth } from '../Styles/CarouselStyles';
+import { mainStyle } from '../Styles/Styles'
+
 
 class VehicleCarousel extends Component {
   constructor() {
@@ -26,7 +28,7 @@ class VehicleCarousel extends Component {
     const mileage = Number(this.props.mileage) //to send
       , entries = Object.keys(ENTRIES).map(title => Object.assign({ title }, ENTRIES[title]))
       , newEntries = entries.map(entry => {
-        switch (entry) {
+        switch (entry.title) {
           case 'Pickup Truck':
             entry.svg = (<PickupBIG />)
             break
@@ -44,7 +46,6 @@ class VehicleCarousel extends Component {
         }
         return entry
       })
-    console.log('newEntries', newEntries)
     this.setState({
       entries: newEntries
     })
@@ -68,7 +69,9 @@ class VehicleCarousel extends Component {
   }
   render() {
     return (
-      <View>
+      <View style={mainStyle.container}>
+        <View style={CarouselStyles.hr} />
+        <Text style={mainStyle.sectionHeading}>SELECT A VEHICLE</Text>
         <Carousel
           ref={c => { this._carousel = c }}
           data={this.state.entries}
@@ -86,10 +89,12 @@ class VehicleCarousel extends Component {
             })
           }}
         />
-        <CustomButton
-          _onButtonPress={() => this.props.requestVehicle(this.state.entries[this.state.activeSlide])}
-          text={`REQUEST A ${this.state.entries[this.state.activeSlide].title.toUpperCase()}`}
-        />
+        <View style={CarouselStyles.buttonContainer}>
+          <CustomButton
+            _onButtonPress={() => this.props.requestVehicle(this.state.entries[this.state.activeSlide])}
+            text={`REQUEST A ${this.state.entries[this.state.activeSlide].title.toUpperCase()}`}
+          />
+        </View>
       </View>
     );
   }
