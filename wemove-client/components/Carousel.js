@@ -4,7 +4,6 @@ import { View, Text, TouchableOpacity } from 'react-native'
 
 import CustomButton from './CustomButton'
 
-import { ENTRIES } from './PickVehicleEntries' //fake data
 
 import PickupBIG from './vehicles/PickupBIG'
 import CargoBIG from './vehicles/CargoBIG'
@@ -21,12 +20,11 @@ class VehicleCarousel extends Component {
     this.state = {
       activeSlide: 0,
       sliderRef: null,
-      entries: ENTRIES
+      entries: {}
     }
   }
   componentWillMount() {
-    const mileage = Number(this.props.mileage) //to send
-      , entries = Object.keys(ENTRIES).map(title => Object.assign({ title }, ENTRIES[title]))
+    const entries = Object.keys(this.props.entries).map(title => Object.assign({ title }, this.props.entries[title]))
       , newEntries = entries.map(entry => {
         switch (entry.title) {
           case 'Pickup Truck':

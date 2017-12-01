@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { TextInput, Text } from 'react-native'
 import { MapView, Constants, Location, Permissions } from 'expo';
 import Geocoder from 'react-native-geocoding'
+import axios from 'axios'
 
 import { Geocoding_API_Key } from '../secrets'
 import { mapStyles } from '../Styles/Styles'
+import { ENTRIES } from './PickVehicleEntries' //fake data
 
 const GEOLOCATION_OPTIONS = { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 };
 
@@ -44,11 +46,25 @@ export default class Map extends Component {
       latitudeDelta: 0.1,
       longitudeDelta: 0.05,
     },
-      this.setState({ location, region })
+    this.setState({ location, region })
   }
   _submitDestination = () => {
-    //TK: method to submit destination to backend
-    this.props.navigation.navigate('PickVehicle', { destination: this.state.destination })
+    axios.post('http://127.0.0.1:5000/api/drivers', {
+      'current': {
+        latitude: this.state.location.coords.latitude,
+        longitude: this.state.location.coords.longitude
+      },
+      'destination': this.state.destination
+    })
+    .then(res => {
+      console.log('response: ', res.data)
+      this.props.navigation.navigate('PickVehicle', {
+        destination: this.state.destination,
+        entries: res.data
+      })
+    })
+    .catch(console.error)
+
     /*
     Geocoder.getFromLocation(destination)
       .then(json => {
