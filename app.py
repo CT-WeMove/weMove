@@ -22,15 +22,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 
 
 Drivers = {
-    'driver1': {'name': 'emily', 'location':'9911 Oak Street, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
-    'driver2': {'name': 'marco', 'location':'8756 Trout Road, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo'},
-    'driver3': {'name': 'luke', 'location': '8198 Canal Ave, New York, NY', 'price_base': '10', 'price_per_mile': '15', 'tier':'box'},
-    'driver4': {'name': 'david', 'location':'232 Princess Drive, New York, NY', 'price_base': '10', 'price_per_mile': '25', 'tier':'moving'},
-    'driver5': {'name': 'steve', 'location':'43 Meadowbrook Ave, New York, NY', 'price_base': '10', 'price_per_mile': '20', 'tier': 'moving'},
-    'driver6': {'name': 'bob', 'location': '8 Jones Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
-    'driver7': {'name': 'doug', 'location':'659 North Glenlake Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
-    'driver8': {'name': 'mary', 'location':'7010 Canal Drive, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo'},
-    'driver9': {'name': 'jane', 'location': '91 Hilltop Ave, New York, NY', 'price_base': '10', 'price_per_mile': '12', 'tier':'box'},
+    '1': {'name': 'emily', 'location':'9911 Oak Street, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
+    '2': {'name': 'marco', 'location':'8756 Trout Road, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo'},
+    '3': {'name': 'luke', 'location': '8198 Canal Ave, New York, NY', 'price_base': '10', 'price_per_mile': '15', 'tier':'box'},
+    '4': {'name': 'david', 'location':'232 Princess Drive, New York, NY', 'price_base': '10', 'price_per_mile': '25', 'tier':'moving'},
+    '5': {'name': 'steve', 'location':'43 Meadowbrook Ave, New York, NY', 'price_base': '10', 'price_per_mile': '20', 'tier': 'moving'},
+    '6': {'name': 'bob', 'location': '8 Jones Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
+    '7': {'name': 'doug', 'location':'659 North Glenlake Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
+    '8': {'name': 'mary', 'location':'7010 Canal Drive, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo'},
+    '9': {'name': 'jane', 'location': '91 Hilltop Ave, New York, NY', 'price_base': '10', 'price_per_mile': '12', 'tier':'box'},
 }
 
 Users = {
@@ -82,14 +82,20 @@ class DriverList (Resource):
         dist = gmaps.distance_matrix(data['current'], data['destination'], mode='driving')
         dist_in_miles = dist['rows'][0]['elements'][0]['distance']['value'] * 0.000621371
 
-        pickup = Drivers['driver1']
-        cargo = Drivers['driver2']
-        box = Drivers['driver3']
-        moving = Drivers['driver4']
+        pickupId = '1'
+        cargoId = '2'
+        boxId = '3'
+        movingId = '4'
+
+        pickup = Drivers[pickupId]
+        cargo = Drivers[cargoId]
+        box = Drivers[boxId]
+        moving = Drivers[movingId]
 
         resp = {
             'Pickup Truck':
                 {
+                    'id': int(pickupId),
                     'total': str(format(float(pickup['price_base'])+dist_in_miles*float(pickup['price_per_mile']), '.2f')),
                     'base': str(format(float(pickup['price_base']), '.0f')),
                     'per_mile': str(format(float(pickup['price_per_mile']), '.0f'))
@@ -97,6 +103,7 @@ class DriverList (Resource):
             ,
             'Cargo Van':
                 {
+                    'id': int(cargoId),
                     'total': str(format(float(cargo['price_base'])+dist_in_miles*float(cargo['price_per_mile']), '.2f')),
                     'base': str(format(float(cargo['price_base']), '.0f')),
                     'per_mile': str(format(float(cargo['price_per_mile']), '.0f'))
@@ -104,6 +111,7 @@ class DriverList (Resource):
             ,
             'Box Truck':
                 {
+                    'id': int(boxId),
                     'total': str(format(float(box['price_base'])+dist_in_miles*float(box['price_per_mile']), '.2f')),
                     'base': str(format(float(box['price_base']), '.0f')),
                     'per_mile': str(format(float(box['price_per_mile']), '.0f'))
@@ -111,6 +119,7 @@ class DriverList (Resource):
             ,
             'Moving Truck':
                 {
+                    'id': int(movingId),
                     'total': str(format(float(moving['price_base'])+dist_in_miles*float(moving['price_per_mile']), '.2f')),
                     'base': str(format(float(moving['price_base']), '.0f')),
                     'per_mile': str(format(float(moving['price_per_mile']), '.0f'))
