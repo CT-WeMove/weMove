@@ -9,7 +9,7 @@ class PickVehicle extends Component {
     super()
     this.state = {
       destination: 'Destination should go here.',
-      distance: '3.1'
+      entries: {}
     }
     this.requestVehicle = this.requestVehicle.bind(this)
   }
@@ -20,7 +20,8 @@ class PickVehicle extends Component {
   componentWillMount() {
     const { state } = this.props.navigation
     this.setState({
-      destination: state.params.destination
+      destination: state.params.destination,
+      entries: state.params.entries
     })
   }
   render() {
@@ -30,7 +31,7 @@ class PickVehicle extends Component {
         <Text>{this.state.destination}, which is {this.state.distance} miles away.</Text>
         <Carousel
           requestVehicle={this.requestVehicle}
-          mileage={this.state.distance}
+          entries={this.state.entries}
         />
       </View>
     )
