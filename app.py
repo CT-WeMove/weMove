@@ -1,21 +1,15 @@
 from flask import Flask, request
 from flask_restful import reqparse, abort, Api, Resource
 from models import db
-import googlemaps
+import secrets
 from datetime import datetime
 
 app = Flask(__name__)
 api = Api(app)
 
-gmaps = googlemaps.Client(key='AIzaSyB4JZwzRc8afKdBYCywiqWbGqj_CP3mntc')
+gmaps = secrets.get_gmaps();
 
-POSTGRES = {
-    'user': 'postgres',
-    'pw': 'WeMove',
-    'db': 'wemove_primary',
-    'host': 'localhost',
-    'port': '5432',
-}
+POSTGRES = secrets.get_postgres();
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 %(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
@@ -79,7 +73,8 @@ class DriverList (Resource):
 
     def post(self):
         data = request.get_json()
-        dist = gmaps.distance_matrix(data['current'], data['destination'], mode='driving')
+        currentLoc = gmaps.reverse_geocode(data['current'])
+        dist = gmaps.distance_matrix(currentLoc[0]['formatted_address'], data['destination'], mode='driving')
         dist_in_miles = dist['rows'][0]['elements'][0]['distance']['value'] * 0.000621371
 
         pickupId = '1'
@@ -136,11 +131,12 @@ class DriverList (Resource):
 #        Drivers[driverId] = {'task': args['task']}
 #        return Drivers[driverId], 201
 
+
 ##
 ## Actually setup the Api resource routing here
 ##
-api.add_resource(DriverList , '/drivers')
-api.add_resource(Driver, '/drivers/<driverId>')
+api.add_resource(DriverList , '/api/drivers')
+api.add_resource(Driver, '/api/drivers/<driverId>')
 
 
 
