@@ -12,7 +12,10 @@ export const mainStyle = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: viewportHeight * 0.9, //REMEMBER TO FIX IF TESTING NOT ON EXPO
+    height: viewportHeight * 0.92, //REMEMBER TO FIX IF TESTING NOT ON EXPO
+  },
+  backgroundImageContainer: {
+    opacity: 0.7,
   },
   accentButtonView: {
     position: 'relative',
@@ -61,9 +64,10 @@ export const logoStyle = StyleSheet.create({
     marginBottom: 50
   },
   wordmark: {
-    color: 'black',
+    color: 'white',
     fontFamily: 'Bauhaus93',
     fontSize: Number(30),
-    marginTop: 20
+    marginTop: 20,
+    backgroundColor: 'rgba(255,255,255, 0)'
   },
 })
