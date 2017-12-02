@@ -18,4 +18,6 @@ export default StackNavigator({
   DriverMatched: {
     screen: DriverMatched
   }
+}, {
+  headerMode: 'none'
 })

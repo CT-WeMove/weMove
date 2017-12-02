@@ -12,7 +12,7 @@ export const mainStyle = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: viewportHeight * 0.92, //REMEMBER TO FIX IF TESTING NOT ON EXPO
+    height: viewportHeight
   },
   backgroundImageContainer: {
     opacity: 0.7,
