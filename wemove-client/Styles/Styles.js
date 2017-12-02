@@ -12,9 +12,13 @@ export const mainStyle = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: viewportHeight * 0.8 //REMEMBER TO FIX IF TESTING NOT ON EXPO
+    height: viewportHeight
+  },
+  backgroundImageContainer: {
+    opacity: 0.7,
   },
   accentButtonView: {
+    position: 'relative',
     backgroundColor: '#50A7A0',
     display: 'flex',
     flexDirection: 'column',
@@ -25,7 +29,8 @@ export const mainStyle = StyleSheet.create({
   },
   accentButtonText: {
     color: '#ffffff',
-    padding: 10
+    padding: 10,
+    fontSize: 18
   },
   sectionHeading: {
     color: 'darkslategray',
@@ -59,10 +64,10 @@ export const logoStyle = StyleSheet.create({
     marginBottom: 50
   },
   wordmark: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'black',
+    color: 'white',
     fontFamily: 'Bauhaus93',
     fontSize: Number(30),
+    marginTop: 20,
+    backgroundColor: 'rgba(255,255,255, 0)'
   },
 })

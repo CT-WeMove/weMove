@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Expo from 'expo'
-import { Text, View } from 'react-native'
+import { Text, View, ImageBackground } from 'react-native'
 
 import { mainStyle } from '../Styles/Styles'
 import LogoSVG from './LogoSVG'
@@ -10,19 +10,20 @@ class HomeScreen extends Component {
   constructor() {
     super()
     this.state = {
-      fontLoaded: false
+      assetsLoaded: false
     }
   }
-  componentWillMount() {
+  loadAssets = () => {
     Expo.Font.loadAsync({
       'Bauhaus93': require('../assets/Bauhaus-93_6274.ttf')
     })
       .then(() => {
         this.setState({
-          fontLoaded: true
+          assetsLoaded: true
         })
       })
       .catch(console.error)
+
   }
   _onButtonPress = () => {
     this.props.navigation.navigate('Map')
@@ -30,13 +31,25 @@ class HomeScreen extends Component {
   render() {
     return (
       <View style={mainStyle.container}>
-        {
-          this.state.fontLoaded ? <LogoSVG /> : null
-        }
-        <CustomButton
-          text="GET A MOVER"
-          _onButtonPress={this._onButtonPress}
-        />
+        <ImageBackground
+          source={require('../assets/background.jpg')}
+          style={mainStyle.container}
+          onLoad={this.loadAssets}
+        >
+          {
+            this.state.assetsLoaded ? (
+              <View>
+                <LogoSVG />
+                <CustomButton
+                  text="GET A MOVER"
+                  _onButtonPress={this._onButtonPress}
+                />
+              </View>
+            ) : (
+                <Text>Loading...</Text>
+              )
+          }
+        </ImageBackground>
       </View>
     )
   }
