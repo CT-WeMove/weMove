@@ -21,7 +21,8 @@ export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
 const entryBorderRadius = 8
-  , slidePadding = 18;
+  , slidePadding = 18
+  , viewPadding = 50;
 
 export default StyleSheet.create({
   slideInnerContainer: {
@@ -85,6 +86,13 @@ export default StyleSheet.create({
     marginTop: slidePadding,
     marginBottom: slidePadding
   },
+  destination: {
+    color: colors.black,
+    fontSize: 20,
+    letterSpacing: 0.5,
+    marginTop: viewPadding,
+    marginBottom: viewPadding - 5
+  },
   subtitle: {
     color: colors.gray,
     fontSize: 10,
@@ -99,6 +107,6 @@ export default StyleSheet.create({
     marginBottom: slidePadding
   },
   buttonContainer: {
-    marginTop: 50
+    paddingBottom: viewPadding
   }
 })

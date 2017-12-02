@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
 
-
 import { mainStyle } from '../Styles/Styles'
 import CarouselStyles, { sliderWidth, itemWidth } from '../Styles/CarouselStyles';
 
@@ -22,9 +21,8 @@ class PickVehicle extends Component {
       activeSlide: 0,
       sliderRef: null
     }
-    this.requestVehicle = this.requestVehicle.bind(this)
   }
-  requestVehicle(vehicle) {
+  requestVehicle = (vehicle) => {
     //TK: backend logic to send choice to server
     this.props.navigation.navigate('DriverMatched', { vehicle })
   }
@@ -48,25 +46,25 @@ class PickVehicle extends Component {
   componentDidMount() {
     const { state } = this.props.navigation;
     const entries = Object.keys(state.params.entries).map(title => Object.assign({ title }, state.params.entries[title]))
-    , newEntries = entries.map(entry => {
-      switch (entry.title) {
-        case 'Pickup Truck':
-          entry.svg = (<PickupBIG />)
-          break
-        case 'Cargo Van':
-          entry.svg = (<CargoBIG />)
-          break
-        case 'Box Truck':
-          entry.svg = (<BoxTruckBIG />)
-          break
-        case 'Moving Truck':
-          entry.svg = (<MovingTruckBIG />)
-          break
-        default:
-          return entry
-      }
-      return entry
-    })
+      , newEntries = entries.map(entry => {
+        switch (entry.title) {
+          case 'Pickup Truck':
+            entry.svg = (<PickupBIG />)
+            break
+          case 'Cargo Van':
+            entry.svg = (<CargoBIG />)
+            break
+          case 'Box Truck':
+            entry.svg = (<BoxTruckBIG />)
+            break
+          case 'Moving Truck':
+            entry.svg = (<MovingTruckBIG />)
+            break
+          default:
+            return entry
+        }
+        return entry
+      })
     this.setState({
       destination: state.params.destination,
       entries: newEntries,
@@ -75,13 +73,14 @@ class PickVehicle extends Component {
   }
   render() {
     return (
-      <View style={mainStyle.container}>
+      <View>
         {
           Array.isArray(this.state.entries) ? (
             <View style={mainStyle.container}>
-              <Text style={CarouselStyles.title}>{this.state.destination} is {this.state.mileage} miles away.</Text>
-              <View style={CarouselStyles.hr} />
-              <Text style={mainStyle.sectionHeading}>SELECT A VEHICLE</Text>
+              { /* <Text style={mainStyle.sectionHeading}>YOUR DESTINATION</Text> */}
+              <Text style={CarouselStyles.destination}>{this.state.destination} is {this.state.mileage} miles away.</Text>
+              { /* <View style={CarouselStyles.hr} /> */}
+              {/* <Text style={mainStyle.sectionHeading}>SELECT A VEHICLE</Text> */}
               <Carousel
                 ref={c => { this._carousel = c }}
                 data={this.state.entries}
@@ -101,7 +100,7 @@ class PickVehicle extends Component {
               />
               <View style={CarouselStyles.buttonContainer}>
                 <CustomButton
-                  _onButtonPress={() => this.state.requestVehicle(this.state.entries[this.state.activeSlide])}
+                  _onButtonPress={() => this.requestVehicle(this.state.entries[this.state.activeSlide])}
                   text={`REQUEST A ${this.state.entries[this.state.activeSlide].title.toUpperCase()}`}
                 />
               </View>

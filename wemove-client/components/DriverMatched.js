@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 
+import { mainStyle } from '../Styles/Styles'
+
 class DriverMatched extends Component {
   constructor() {
     super()
@@ -9,8 +11,8 @@ class DriverMatched extends Component {
   render() {
     const { state } = this.props.navigation
     return (
-      <View>
-        <Text>{state.params.vehicle.title}</Text>
+      <View style={mainStyle.container}>
+        <Text>{state.params.vehicle.title} Requested! More TK</Text>
       </View>
     )
   }
