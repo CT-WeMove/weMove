@@ -49,8 +49,8 @@ export default class Map extends Component {
     this.setState({ location, region })
   }
   _submitDestination = () => {
-    /* TK when server is hooked in
-    axios.post('<APP ADDRESS>/api/drivers', {
+    /* TK when routes are set
+    axios.post('https://wemove-184522.appspot.com/api/drivers', {
       'current': {
         latitude: this.state.location.coords.latitude,
         longitude: this.state.location.coords.longitude
@@ -73,7 +73,6 @@ export default class Map extends Component {
       entries: ENTRIES,
       mileage: 0
     })
-
 
     /*
     Geocoder.getFromLocation(destination)
