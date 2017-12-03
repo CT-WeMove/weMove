@@ -90,7 +90,7 @@ export default StyleSheet.create({
     color: colors.black,
     fontSize: 20,
     letterSpacing: 0.5,
-    marginTop: viewPadding,
+    marginTop: viewPadding + 5,
     marginBottom: viewPadding - 5
   },
   subtitle: {

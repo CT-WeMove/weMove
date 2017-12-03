@@ -32,7 +32,7 @@ class HomeScreen extends Component {
     return (
       <View style={mainStyle.container}>
         <ImageBackground
-          source={require('../assets/background.jpg')}
+          source={require('../assets/splash.png')}
           style={mainStyle.container}
           onLoad={this.loadAssets}
         >
