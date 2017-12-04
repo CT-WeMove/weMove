@@ -1,19 +1,21 @@
+import logging
+import os
 from flask import Flask, request
 from flask_restful import reqparse, abort, Api, Resource
-from models import db
+#from models import db
 import secrets
 from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
+import sqlalchemy
 
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 api = Api(app)
 
 gmaps = secrets.get_gmaps();
-
-POSTGRES = secrets.get_postgres();
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
-%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
-
 
 Drivers = {
     '1': {'name': 'emily', 'location':'9911 Oak Street, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
@@ -34,12 +36,9 @@ Users = {
 
 LOGGED_IN_USER = 'user1';
 
-def abort_if_driver_doesnt_exist(driverId):
-    if driverId not in Drivers:
-        abort(404, message="Driver {} doesn't exist".format(driverId))
-
-parser = reqparse.RequestParser()
-parser.add_argument('task')
+@app.route('/')
+def hello():
+	return 'Hello Youtube'
 
 
 # Todo
@@ -130,23 +129,10 @@ class DriverList (Resource):
         }
 
         return resp
-
-#    def post(self):
-#        args = parser.parse_args()
-#        driverId = int(max(Drivers.keys()).lstrip('todo')) + 1
-#        driverId = 'todo%i' % driverId
-#        Drivers[driverId] = {'task': args['task']}
-#        return Drivers[driverId], 201
-
-
-##
-## Actually setup the Api resource routing here
-##
+        
+        
 api.add_resource(DriverList , '/api/drivers')
 api.add_resource(Driver, '/api/drivers/<driverId>')
 
-
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1',port=8080,debug=True)
