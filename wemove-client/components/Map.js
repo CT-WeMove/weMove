@@ -49,7 +49,6 @@ export default class Map extends Component {
     this.setState({ location, region })
   }
   _submitDestination = () => {
-    /* TK when routes are set
     axios.post('https://wemove-184522.appspot.com/api/drivers', {
       'current': {
         latitude: this.state.location.coords.latitude,
@@ -61,18 +60,17 @@ export default class Map extends Component {
       console.log('response: ', res.data)
       this.props.navigation.navigate('PickVehicle', {
         destination: this.state.destination,
-        entries: res.data.entries,
+        entries: res.data.vehicles,
         mileage: res.data.mileage
       })
     })
     .catch(console.error)
-    */
 
-    this.props.navigation.navigate('PickVehicle', {
-      destination: this.state.destination,
-      entries: ENTRIES,
-      mileage: 0
-    })
+    // this.props.navigation.navigate('PickVehicle', {
+    //   destination: this.state.destination,
+    //   entries: ENTRIES,
+    //   mileage: 0
+    // })
 
     /*
     Geocoder.getFromLocation(destination)
