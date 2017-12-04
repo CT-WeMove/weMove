@@ -6,3 +6,6 @@ env/
 
 #pycache
 __pycache__/
+
+#secret keys
+secrets.py
