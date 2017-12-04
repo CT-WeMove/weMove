@@ -1,5 +1,0 @@
-node_modules/**/*
-.expo/*
-npm-debug.*
-secrets.json
-secrets.py
