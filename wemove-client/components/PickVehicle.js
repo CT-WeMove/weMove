@@ -37,7 +37,7 @@ class PickVehicle extends Component {
 
         <View style={CarouselStyles.hr} />
 
-        <Text style={CarouselStyles.title}>${item.total}.00</Text>
+        <Text style={CarouselStyles.title}>${item.total}</Text>
         <Text style={CarouselStyles.subtitle}>${item.base} base + ${item.per_mile} / mile</Text>
 
       </TouchableOpacity>
