@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 
 import { mainStyle } from '../Styles/Styles'
-import { CarouselStyles } from '../Styles/CarouselStyles'
+import CarouselStyles from '../Styles/CarouselStyles'
 
 import PickupBIG from './vehicles/PickupBIG'
 import CargoBIG from './vehicles/CargoBIG'
@@ -54,13 +54,12 @@ class DriverMatched extends Component {
     })
   }
   render() {
-    const { state } = this.props.navigation
     return (
       <View style={mainStyle.container}>
         <Text style={mainStyle.sectionHeading}>DRIVER MATCHED</Text>
 
         <View>
-          <Text>{this.state.driverName}</Text>
+          <Text>{this.state.driver.name}</Text>
           <Text>{this.state.driver.rating} out of 5 stars</Text>
         </View>
         <View>
@@ -73,7 +72,7 @@ class DriverMatched extends Component {
         </View>
 
         <CustomButton
-          _onButtonPress={this.confirmDriver}
+          _onButtonPress={this._confirmDriver}
           text='CONFIRM YOUR TRIP'
         />
 

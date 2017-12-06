@@ -20,10 +20,14 @@ class PickVehicle extends Component {
       entries: {},
       mileage: 0,
       activeSlide: 0,
-      sliderRef: null
+      sliderRef: null,
+      buttonText: 'REQUEST'
     }
   }
   requestVehicle = (vehicle) => {
+    this.setState({
+      buttonText: 'REQUESTING...'
+    })
     axios.get(`https://wemove-184522.appspot.com/api/drivers/${vehicle.id}`, {})
       .then(res => {
         this.props.navigation.navigate('DriverMatched', {
@@ -79,15 +83,13 @@ class PickVehicle extends Component {
     })
   }
   render() {
+    const buttonText = this.state.buttonText === 'REQUESTING...' ? this.state.buttonText : this.state.entries.length ? `REQUEST A ${this.state.entries[this.state.activeSlide].title.toUpperCase()}` : ''
     return (
       <View>
         {
           Array.isArray(this.state.entries) ? (
             <View style={mainStyle.container}>
-              { /* <Text style={mainStyle.sectionHeading}>YOUR DESTINATION</Text> */}
               <Text style={CarouselStyles.destination}>{this.state.destination} is {this.state.mileage} miles away.</Text>
-              { /* <View style={CarouselStyles.hr} /> */}
-              {/* <Text style={mainStyle.sectionHeading}>SELECT A VEHICLE</Text> */}
               <Carousel
                 ref={c => { this._carousel = c }}
                 data={this.state.entries}
@@ -108,7 +110,7 @@ class PickVehicle extends Component {
               <View style={CarouselStyles.buttonContainer}>
                 <CustomButton
                   _onButtonPress={() => this.requestVehicle(this.state.entries[this.state.activeSlide])}
-                  text={`REQUEST A ${this.state.entries[this.state.activeSlide].title.toUpperCase()}`}
+                  text={buttonText}
                 />
               </View>
             </View>

@@ -14,6 +14,16 @@ export const mainStyle = StyleSheet.create({
     justifyContent: 'center',
     height: viewportHeight
   },
+  dimContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: viewportHeight
+  },
   backgroundImageContainer: {
     opacity: 0.7,
   },
@@ -61,13 +71,13 @@ export const logoStyle = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 50
   },
   wordmark: {
     color: 'white',
     fontFamily: 'Bauhaus93',
     fontSize: Number(30),
     marginTop: 20,
-    backgroundColor: 'rgba(255,255,255, 0)'
+    backgroundColor: 'rgba(255,255,255, 0)',
+    marginBottom: 50
   },
 })

@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 
 import { mainStyle } from '../Styles/Styles'
-import { CarouselStyles } from '../Styles/CarouselStyles'
+import CarouselStyles from '../Styles/CarouselStyles'
 
 import PickupBIG from './vehicles/PickupBIG'
 import CargoBIG from './vehicles/CargoBIG'
 import BoxTruckBIG from './vehicles/BoxTruckBIG'
 import MovingTruckBIG from './vehicles/MovingTruckBIG'
 import CustomButton from './CustomButton'
+import LogoSVG from './LogoSVG'
 
 class OnTrip extends Component {
   constructor() {
@@ -18,7 +19,6 @@ class OnTrip extends Component {
       driver: {},
       vehicle: {}
     }
-    this._getSVG = this._getSVG.bind(this)
     this._confirmDriver = this._confirmDriver.bind(this)
   }
   _confirmDriver() {
@@ -26,29 +26,21 @@ class OnTrip extends Component {
       state: this.state
     })
   }
-  _getSVG(vehicleName) {
-    switch (vehicleName) {
-      case 'Pickup Truck':
-        return (<PickupBIG />)
-      case 'Cargo Van':
-        return (<CargoBIG />)
-      case 'Box Truck':
-        return (<BoxTruckBIG />)
-      case 'Moving Truck':
-        return (<MovingTruckBIG />)
-      default:
-        return null
-    }
-  }
   componentDidMount() {
     const { state } = this.props.navigation
     this.setState(state)
   }
   render() {
-    const { state } = this.props.navigation
     return (
       <View style={mainStyle.container}>
-        <Text style={mainStyle.sectionHeading}>DRIVER MATCHED</Text>
+        <Text style={mainStyle.sectionHeading}>ON TRIP</Text>
+
+        <LogoSVG />
+
+        <View style={CarouselStyles.hr} />
+
+        <View style={CarouselStyles.hr} />
+
 
         <View>
           <Text>{this.state.driverName}</Text>
@@ -64,7 +56,7 @@ class OnTrip extends Component {
         </View>
 
         <CustomButton
-          _onButtonPress={this.confirmDriver}
+          _onButtonPress={this._confirmDriver}
           text='CONFIRM YOUR TRIP'
         />
 

@@ -58,6 +58,5 @@ export default (props) => (
         <Path d="M42,88 L45,88" id="Shape" stroke="#FFFFFF" strokeWidth="1.9998" strokeLinecap="round" strokeLinejoin="round" />
       </G>
     </Svg>
-    <Text style={logoStyle.wordmark}>weMove</Text>
   </View>
 )

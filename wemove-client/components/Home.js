@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import Expo from 'expo'
 import { Text, View, ImageBackground } from 'react-native'
 
-import { mainStyle } from '../Styles/Styles'
+import { mainStyle, logoStyle } from '../Styles/Styles'
 import LogoSVG from './LogoSVG'
+import Wordmark from './Wordmark'
 import CustomButton from './CustomButton'
 
 class HomeScreen extends Component {
@@ -38,15 +39,19 @@ class HomeScreen extends Component {
         >
           {
             this.state.assetsLoaded ? (
-              <View>
+              <View style={logoStyle.container}>
                 <LogoSVG />
+                <Wordmark />
                 <CustomButton
                   text="GET A MOVER"
                   _onButtonPress={this._onButtonPress}
                 />
               </View>
             ) : (
+              <View style={logoStyle.container}>
+                <LogoSVG />
                 <Text>Loading...</Text>
+              </View>
               )
           }
         </ImageBackground>

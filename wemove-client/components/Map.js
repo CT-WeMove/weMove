@@ -22,7 +22,7 @@ export default class Map extends Component {
           longitude: 0
         }
       },
-      destination: 'Where to?'
+      destination: 'Where to?',
     }
   }
   componentWillMount() {
@@ -46,30 +46,35 @@ export default class Map extends Component {
       latitudeDelta: 0.1,
       longitudeDelta: 0.05,
     },
-    this.setState({ location, region })
+      this.setState({ location, region })
   }
   _submitDestination = () => {
+    const destination = this.state.destination
+    this.setState({
+      destination: 'Calculating your route...'
+    })
     axios.post('https://wemove-184522.appspot.com/api/drivers', {
       'current': {
         latitude: this.state.location.coords.latitude,
         longitude: this.state.location.coords.longitude
       },
-      'destination': this.state.destination
+      destination
     })
-    .then(res => {
-      this.props.navigation.navigate('PickVehicle', {
-        destination: this.state.destination,
-        entries: res.data.vehicles,
-        mileage: res.data.mileage
+      .then(res => {
+        this.props.navigation.navigate('PickVehicle', {
+          destination,
+          entries: res.data.vehicles,
+          mileage: res.data.mileage
+        })
       })
-    })
-    .catch(console.error)
-
-    // this.props.navigation.navigate('PickVehicle', {
-    //   destination: this.state.destination,
-    //   entries: ENTRIES,
-    //   mileage: 0
-    // })
+      .catch(err => {
+        console.error(err)
+        this.props.navigation.navigate('PickVehicle', {
+          destination,
+          entries: ENTRIES,
+          mileage: 0
+        })
+      })
 
     /*
     Geocoder.getFromLocation(destination)
@@ -100,7 +105,7 @@ export default class Map extends Component {
           onChangeText={(destination) => this.setState({ destination })}
           onSubmitEditing={this._submitDestination}
           shadowColor='#888888'
-          shadowOffset={{width: 10, height: 10}}
+          shadowOffset={{ width: 10, height: 10 }}
           shadowOpacity='50'
           shadowRadius='5'
         />
