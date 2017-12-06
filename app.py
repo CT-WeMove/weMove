@@ -18,15 +18,15 @@ api = Api(app)
 gmaps = secrets.get_gmaps();
 
 Drivers = {
-    '1': {'name': 'emily', 'location':'9911 Oak Street, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
-    '2': {'name': 'marco', 'location':'8756 Trout Road, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo'},
-    '3': {'name': 'luke', 'location': '8198 Canal Ave, New York, NY', 'price_base': '10', 'price_per_mile': '15', 'tier':'box'},
-    '4': {'name': 'david', 'location':'232 Princess Drive, New York, NY', 'price_base': '10', 'price_per_mile': '25', 'tier':'moving'},
-    '5': {'name': 'steve', 'location':'43 Meadowbrook Ave, New York, NY', 'price_base': '10', 'price_per_mile': '20', 'tier': 'moving'},
-    '6': {'name': 'bob', 'location': '8 Jones Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
-    '7': {'name': 'doug', 'location':'659 North Glenlake Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
-    '8': {'name': 'mary', 'location':'7010 Canal Drive, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo'},
-    '9': {'name': 'jane', 'location': '91 Hilltop Ave, New York, NY', 'price_base': '10', 'price_per_mile': '12', 'tier':'box'},
+    '1': {'name': 'emily', 'location':'9911 Oak Street, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup', 'rating': '5'},
+    '2': {'name': 'marco', 'location':'8756 Trout Road, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo', 'rating': '4'},
+    '3': {'name': 'luke', 'location': '8198 Canal Ave, New York, NY', 'price_base': '10', 'price_per_mile': '15', 'tier':'box', 'rating': '4'},
+    '4': {'name': 'david', 'location':'232 Princess Drive, New York, NY', 'price_base': '10', 'price_per_mile': '25', 'tier':'moving', 'rating': '3'},
+    '5': {'name': 'steve', 'location':'43 Meadowbrook Ave, New York, NY', 'price_base': '10', 'price_per_mile': '20', 'tier': 'moving', 'rating': '5'},
+    '6': {'name': 'bob', 'location': '8 Jones Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup', 'rating': '5'},
+    '7': {'name': 'doug', 'location':'659 North Glenlake Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup', 'rating': '4'},
+    '8': {'name': 'mary', 'location':'7010 Canal Drive, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo', 'rating': '5'},
+    '9': {'name': 'jane', 'location': '91 Hilltop Ave, New York, NY', 'price_base': '10', 'price_per_mile': '12', 'tier':'box', 'rating': '3'},
 }
 
 Users = {
@@ -46,23 +46,16 @@ def hello():
 class Driver(Resource):
     def get(self, driverId):
         dist = gmaps.distance_matrix(Users[LOGGED_IN_USER]['location'], Drivers[driverId]['location'], mode='driving')
-        return dist
-#        return dist['rows'][0]['elements'][0]['duration']['text']
-#    def get(self, driverId):
-#        abort_if_driver_doesnt_exist(driverId)
-#        return Drivers[driverId]
 
-    def delete(self, driverId):
-        abort_if_driver_doesnt_exist(driverId)
-        del Drivers[driverId]
-        return '', 204
+        resp = {
+            'time' : dist['rows'][0]['elements'][0]['duration']['text'],
+            'driver' : {
+                'name' : Drivers[driverId]['name'],
+                'rating' : Drivers[driverId]['rating']
+            }
+        }
 
-    def put(self, driverId):
-        args = parser.parse_args()
-        task = {'task': args['task']}
-        Drivers[driverId] = task
-        return task, 201
-
+        return resp
 
 # DriverList
 # shows a list of all Drivers, and lets you POST to add new tasks
