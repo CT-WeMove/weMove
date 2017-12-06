@@ -8,4 +8,4 @@ install: pip install -r requirements.txt
 before_script:
   - psql -c 'create database wemove_primary;' -U postgres
 
-script: nosetests /tests/unit_tests_primary.py
+script: python /tests/unit_tests_primary.py
