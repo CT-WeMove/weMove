@@ -20,7 +20,7 @@ install:
 - pip install -r requirements.txt
 - pip install -r requirements.txt -t lib/
 - gcloud config set project wemove-184522
-- gcloud -q components update gae-python
+- sudo gcloud -q components update gae-python
 before_script:
 - psql -c 'create database wemove_primary;' -U postgres
 script:
