@@ -57,7 +57,6 @@ export default class Map extends Component {
       'destination': this.state.destination
     })
     .then(res => {
-      console.log('response: ', res.data)
       this.props.navigation.navigate('PickVehicle', {
         destination: this.state.destination,
         entries: res.data.vehicles,

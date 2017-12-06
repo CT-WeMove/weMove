@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
+import axios from 'axios'
 
 import { mainStyle } from '../Styles/Styles'
 import CarouselStyles, { sliderWidth, itemWidth } from '../Styles/CarouselStyles';
@@ -23,8 +24,14 @@ class PickVehicle extends Component {
     }
   }
   requestVehicle = (vehicle) => {
-    //TK: backend logic to send choice to server
-    this.props.navigation.navigate('DriverMatched', { vehicle })
+    axios.get(`https://wemove-184522.appspot.com/api/drivers/${vehicle.id}`, {})
+      .then(res => {
+        this.props.navigation.navigate('DriverMatched', {
+          time: res.data.time,
+          driver: res.data.driver,
+          vehicle
+        })
+      })
   }
   _renderItem({ item, index }) {
     return (

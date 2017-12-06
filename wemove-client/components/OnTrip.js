@@ -10,7 +10,7 @@ import BoxTruckBIG from './vehicles/BoxTruckBIG'
 import MovingTruckBIG from './vehicles/MovingTruckBIG'
 import CustomButton from './CustomButton'
 
-class DriverMatched extends Component {
+class OnTrip extends Component {
   constructor() {
     super()
     this.state = {
@@ -42,16 +42,7 @@ class DriverMatched extends Component {
   }
   componentDidMount() {
     const { state } = this.props.navigation
-      , vehicle = state.params.vehicle
-      , svg = this._getSVG(vehicle.title);
-    this.setState({
-      vehicle,
-      svg,
-      driver: {
-        name: state.params.driver.name[0].toUpperCase() + state.params.driver.name.slice(1),
-        rating: state.params.driver.rating
-      }
-    })
+    this.setState(state)
   }
   render() {
     const { state } = this.props.navigation
@@ -82,4 +73,4 @@ class DriverMatched extends Component {
   }
 }
 
-export default DriverMatched
+export default OnTrip
