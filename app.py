@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 api = Api(app)
 
-gmaps = secrets.get_gmaps();
+gmaps = secrets.get_gmaps()
 
 db.init_app(app)
 
@@ -58,7 +58,6 @@ class DriverInfo(Resource):
         }
 
         return resp
-
 
 # DriverList
 # shows a list of all Drivers, and lets you POST to add new tasks
