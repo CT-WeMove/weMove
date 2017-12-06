@@ -28,7 +28,7 @@ except ImportError:
 import json
 import os
 import sys
-import urllib2
+import urllib.request
 import zipfile
 
 _SDK_URL = (
@@ -37,7 +37,7 @@ _SDK_URL = (
 
 def get_gae_versions():
     try:
-        version_info_json = urllib2.urlopen(_SDK_URL).read()
+        version_info_json = urllib.request.urlopen(_SDK_URL).read()
     except:
         return {}
     try:
@@ -80,7 +80,7 @@ def main(argv):
     sdk_urls = get_sdk_urls(sdk_versions)
     for sdk_url in sdk_urls:
         try:
-            sdk_contents = StringIO.StringIO(urllib2.urlopen(sdk_url).read())
+            sdk_contents = StringIO.StringIO(urllib.request.urlopen(sdk_url).read())
             break
         except:
             pass
