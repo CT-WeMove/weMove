@@ -11,7 +11,7 @@ env_variables:
     # Replace user, password, database, and instance connection name with the values obtained
     # when configuring your Cloud SQL instance.
     SQLALCHEMY_DATABASE_URI: >-
-      postgresql+psycopg2://postgres:WeMove@/wemove_primary?host=/cloudsql/wemove-184522:us-east1:wemove-primary
+      postgresql+psycopg2://postgres:WeMove@35.185.57.159:5432/wemove_primary
 #[END env]
 
 #[START cloudsql_settings]

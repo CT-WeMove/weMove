@@ -2,7 +2,7 @@ import logging
 import os
 from flask import Flask, request
 from flask_restful import reqparse, abort, Api, Resource
-#from models import db
+from models import db
 import secrets
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -10,7 +10,7 @@ import sqlalchemy
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:WeMove@35.185.57.159:5432/wemove_primary'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 api = Api(app)
@@ -18,15 +18,15 @@ api = Api(app)
 gmaps = secrets.get_gmaps();
 
 Drivers = {
-    '1': {'name': 'emily', 'location':'9911 Oak Street, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
-    '2': {'name': 'marco', 'location':'8756 Trout Road, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo'},
-    '3': {'name': 'luke', 'location': '8198 Canal Ave, New York, NY', 'price_base': '10', 'price_per_mile': '15', 'tier':'box'},
-    '4': {'name': 'david', 'location':'232 Princess Drive, New York, NY', 'price_base': '10', 'price_per_mile': '25', 'tier':'moving'},
-    '5': {'name': 'steve', 'location':'43 Meadowbrook Ave, New York, NY', 'price_base': '10', 'price_per_mile': '20', 'tier': 'moving'},
-    '6': {'name': 'bob', 'location': '8 Jones Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
-    '7': {'name': 'doug', 'location':'659 North Glenlake Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup'},
-    '8': {'name': 'mary', 'location':'7010 Canal Drive, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo'},
-    '9': {'name': 'jane', 'location': '91 Hilltop Ave, New York, NY', 'price_base': '10', 'price_per_mile': '12', 'tier':'box'},
+    '1': {'name': 'emily', 'location':'9911 Oak Street, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup', 'rating': '5'},
+    '2': {'name': 'marco', 'location':'8756 Trout Road, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo', 'rating': '4'},
+    '3': {'name': 'luke', 'location': '8198 Canal Ave, New York, NY', 'price_base': '10', 'price_per_mile': '15', 'tier':'box', 'rating': '4'},
+    '4': {'name': 'david', 'location':'232 Princess Drive, New York, NY', 'price_base': '10', 'price_per_mile': '25', 'tier':'moving', 'rating': '3'},
+    '5': {'name': 'steve', 'location':'43 Meadowbrook Ave, New York, NY', 'price_base': '10', 'price_per_mile': '20', 'tier': 'moving', 'rating': '5'},
+    '6': {'name': 'bob', 'location': '8 Jones Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup', 'rating': '5'},
+    '7': {'name': 'doug', 'location':'659 North Glenlake Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup', 'rating': '4'},
+    '8': {'name': 'mary', 'location':'7010 Canal Drive, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo', 'rating': '5'},
+    '9': {'name': 'jane', 'location': '91 Hilltop Ave, New York, NY', 'price_base': '10', 'price_per_mile': '12', 'tier':'box', 'rating': '3'},
 }
 
 Users = {
@@ -38,7 +38,7 @@ LOGGED_IN_USER = 'user1';
 
 @app.route('/')
 def hello():
-	return 'Hello Youtube'
+	return 'WeMove Backend API!'
 
 
 # Todo
@@ -46,36 +46,30 @@ def hello():
 class Driver(Resource):
     def get(self, driverId):
         dist = gmaps.distance_matrix(Users[LOGGED_IN_USER]['location'], Drivers[driverId]['location'], mode='driving')
-        return dist
-#        return dist['rows'][0]['elements'][0]['duration']['text']
-#    def get(self, driverId):
-#        abort_if_driver_doesnt_exist(driverId)
-#        return Drivers[driverId]
 
-    def delete(self, driverId):
-        abort_if_driver_doesnt_exist(driverId)
-        del Drivers[driverId]
-        return '', 204
+        resp = {
+            'time' : dist['rows'][0]['elements'][0]['duration']['text'],
+            'driver' : {
+                'name' : Drivers[driverId]['name'],
+                'rating' : Drivers[driverId]['rating']
+            }
+        }
 
-    def put(self, driverId):
-        args = parser.parse_args()
-        task = {'task': args['task']}
-        Drivers[driverId] = task
-        return task, 201
+        return resp
 
 
 # DriverList
 # shows a list of all Drivers, and lets you POST to add new tasks
 class DriverList (Resource):
     def get(self):
-        return Drivers
+        return Driver.query.filter_by(tier='pickup').all()
 
     def post(self):
         data = request.get_json()
         currentLoc = gmaps.reverse_geocode(data['current'])
 
         # Todo: write current location to users table
-        Users[LOGGED_IN_USER]['location'] = currentLoc[0]['formatted_address']
+        Users[LOGGED_IN_USER]['location'] = currentLoc[0]['formatted_address']  
 
         dist = gmaps.distance_matrix(currentLoc[0]['formatted_address'], data['destination'], mode='driving')
         dist_in_miles = dist['rows'][0]['elements'][0]['distance']['value'] * 0.000621371

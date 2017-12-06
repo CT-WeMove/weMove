@@ -35,26 +35,21 @@ class User(BaseModel, db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.Unicode(255))
-    phoneNumber = db.Column(db.Integer)
+    location = db.Column(db.Unicode(255))
 
 
 class Driver(BaseModel, db.Model):
-    TYPES = [
-        (u'pickupTruck', u'Pickup'),
-        (u'cargoVan', u'Cargo Van'),
-        (u'boxTruck', u'Box Truck'),
-        (u'movingTruck', u'Moving Truck')
-    ]
 
     """Model for the driver table"""
     __tablename__ = 'drivers'
 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.Unicode(255))
-    phoneNumber = db.Column(db.Integer)
-    # vehicleType = db.Column(ChoiceType(TYPES))
-    locationLat = db.Column(db.Float)
-    locationLng = db.Column(db.Float)
+    tier = db.Column(db.Unicode(255))
+    location = db.Column(db.Unicode(255))
+    price_base = db.Column(db.Integer)
+    price_per_mile = db.Column(db.Integer)
+    rating = db.Column(db.Integer)
 
 
 
@@ -66,9 +61,7 @@ class Request(BaseModel, db.Model):
     userId = db.Column(db.Unicode(255))
     driverId = db.Column(db.Unicode(255))
     price = db.Column(db.Integer)
-    sourceLat = db.Column(db.Float)
-    sourceLng = db.Column(db.Float)    
-    destinationLat = db.Column(db.Float)
-    destinationLng = db.Column(db.Float)
+    source = db.Column(db.Unicode(255))
+    destination = db.Column(db.Unicode(255))
 
 
