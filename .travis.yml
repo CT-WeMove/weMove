@@ -28,4 +28,3 @@ before_script:
 script:
 - python tests/unit_tests_primary.py
 - gcloud -q preview app deploy app.yaml --promote
-- python e2e_test.py
