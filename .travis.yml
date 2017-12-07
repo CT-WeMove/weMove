@@ -12,10 +12,10 @@ before_install:
 - mkdir -p lib
 install:
 # Install the Python dependencies
-- pip install -r requirements.txt -t lib/
+- pip3 install -r requirements.txt -t lib/
 script:
 - echo "Running the Test"
-- python unit_tests_primary.py
+- python3 unit_tests_primary.py
 # [START travis_deploy]
 deploy:
     provider: gae
