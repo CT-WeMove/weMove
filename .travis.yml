@@ -2,20 +2,20 @@
 sudo: false
 language: python
 python: 
-- 3.5
+ - "3.5"
 before_install:
 # Decrypt the credentials we added to the repo using the key we added with the Travis command line tool
-- openssl aes-256-cbc -K $encrypted_bfa6623c8d1e_key -iv $encrypted_bfa6623c8d1e_iv
+ - openssl aes-256-cbc -K $encrypted_bfa6623c8d1e_key -iv $encrypted_bfa6623c8d1e_iv
   -in client-secret.json.enc -out client-secret.json -d
 # If the SDK is not already cached, download it and unpack it
-- tar -xzf credentials.tar.gz
-- mkdir -p lib
+ - tar -xzf credentials.tar.gz
+ - mkdir -p lib
 install:
 # Install the Python dependencies
-- pip install -r requirements.txt -t lib/
+ - pip install -r requirements.txt -t lib/
 script:
-- echo "Running the Test"
-- python unit_tests_primary.py
+ - echo "Running the Test"
+ - python unit_tests_primary.py
 # [START travis_deploy]
 deploy:
     provider: gae
