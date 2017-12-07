@@ -15,6 +15,7 @@ from flask_sqlalchemy import SQLAlchemy
 import sqlalchemy
 import json
 
+from models import User
 
 class TestStringMethods(unittest.TestCase):
 
@@ -22,7 +23,8 @@ class TestStringMethods(unittest.TestCase):
         self.db_fd, app.app.config['DATABASE'] = tempfile.mkstemp()
         app.app.testing = True
         self.app = app.app.test_client()
-
+        # self.user = User.objects.create(id=1,name='Luke',location='home')
+        
     def test_upper(self):
         self.assertEqual('foo'.upper(), 'FOO')
 

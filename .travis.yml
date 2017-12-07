@@ -8,6 +8,8 @@ before_install:
 # Decrypt the credentials we added to the repo using the key we added with the Travis command line tool
  - openssl aes-256-cbc -K $encrypted_bfa6623c8d1e_key -iv $encrypted_bfa6623c8d1e_iv
   -in client-secret.json.enc -out client-secret.json -d
+ - openssl aes-256-cbc -K $encrypted_bfa6623c8d1e_key -iv $encrypted_bfa6623c8d1e_iv 
+  -in secrets.py.enc -out secrets.py -d
 # If the SDK is not already cached, download it and unpack it
  - tar -xzf credentials.tar.gz
  - mkdir -p lib
