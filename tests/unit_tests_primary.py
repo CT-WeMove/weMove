@@ -7,7 +7,7 @@ import tempfile
 import json
 import sys
 sys.path.insert(0, '/home/la393/weMove')
-import app
+from .. import app
 
 
 class TestStringMethods(unittest.TestCase):
