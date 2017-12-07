@@ -6,9 +6,9 @@ import unittest
 import tempfile
 import json
 import sys
-sys.path.insert(0, '/home/la393/weMove')
-sys.path.append('../app')
 
+sys.path.insert(0,'..')
+import app
 class TestStringMethods(unittest.TestCase):
 
     def setUp(self):
