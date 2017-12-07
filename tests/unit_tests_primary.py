@@ -7,8 +7,7 @@ import tempfile
 import json
 import sys
 sys.path.insert(0, '/home/la393/weMove')
-from .. import app
-
+sys.path.append('../app')
 
 class TestStringMethods(unittest.TestCase):
 
