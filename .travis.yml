@@ -1,6 +1,7 @@
 # Use Dockerized infrastructure
 sudo: false
 language: python
+- "3.5"
 before_install:
 # Decrypt the credentials we added to the repo using the key we added with the Travis command line tool
 - openssl aes-256-cbc -K $encrypted_bfa6623c8d1e_key -iv $encrypted_bfa6623c8d1e_iv
