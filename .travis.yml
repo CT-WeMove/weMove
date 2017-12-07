@@ -14,7 +14,6 @@ install:
 script:
 - echo "Running the Test"
 - python unit_tests_primary.py
-- echo "Passed the Test"
 # [START travis_deploy]
 deploy:
     provider: gae

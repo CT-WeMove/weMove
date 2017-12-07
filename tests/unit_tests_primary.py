@@ -6,8 +6,6 @@ import unittest
 import tempfile
 import json
 import sys
-
-sys.path.append("..")
 import app
 class TestStringMethods(unittest.TestCase):
 

@@ -6,9 +6,20 @@ import unittest
 import tempfile
 import json
 import sys
-
-sys.path.append("..")
 import app
+
+import logging
+import os
+from flask import Flask, request
+from flask_restful import reqparse, abort, Api, Resource
+from models import db, Driver, User, Request
+import secrets
+from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
+import sqlalchemy
+import json
+
+
 class TestStringMethods(unittest.TestCase):
 
     def setUp(self):
