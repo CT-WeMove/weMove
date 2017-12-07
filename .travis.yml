@@ -17,7 +17,7 @@ script:
 deploy:
     provider: gae
     # Skip cleanup so api_key.py and vendored dependencies are still there
-    # skip_cleanup: true
+    skip_cleanup: true
     keyfile: client-secret.json
     project: wemove-184522
     default: true
