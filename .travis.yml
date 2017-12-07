@@ -12,7 +12,9 @@ install:
 # Install the Python dependencies
 - pip install -r requirements.txt -t lib/
 script:
-- echo "No Script to run"
+- echo "Running the Test"
+- python tests/unit_tests_primary.py
+- echo "Passed the Test"
 # [START travis_deploy]
 deploy:
     provider: gae
