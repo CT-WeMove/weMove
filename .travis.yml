@@ -13,7 +13,7 @@ install:
 - pip install -r requirements.txt -t lib/
 script:
 - echo "Running the Test"
-- python tests/unit_tests_primary.py
+- python unit_tests_primary.py
 - echo "Passed the Test"
 # [START travis_deploy]
 deploy:
