@@ -65,9 +65,21 @@ class TestMethods(unittest.TestCase):
         with self.assertRaises(TypeError):
             s.split(2)
 
-    def test_ping(self):
+    def test_ping_success(self):
         resp = self.app.get('/ping')
         self.assertEqual(resp.status_code, 200)
+
+    def test_ping_success2(self):
+        resp = self.app.get('/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_ping_failure(self):
+        resp = self.app.get('/doesNotExist')
+        self.assertEqual(resp.status_code, 404)
+
+    def test_ping_failure2(self):
+        resp = self.app.get('/drivers/api/12/NY')
+        self.assertEqual(resp.status_code, 404)
 
     def tearDown(self):
         self.postgresql.stop()
