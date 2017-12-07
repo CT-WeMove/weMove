@@ -7,6 +7,7 @@ import secrets
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 import sqlalchemy
+import json
 
 app = Flask(__name__)
 
@@ -19,23 +20,6 @@ gmaps = secrets.get_gmaps()
 
 db.init_app(app)
 
-Drivers = {
-    '1': {'name': 'emily', 'location':'9911 Oak Street, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup', 'rating': '5'},
-    '2': {'name': 'marco', 'location':'8756 Trout Road, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo', 'rating': '4'},
-    '3': {'name': 'luke', 'location': '8198 Canal Ave, New York, NY', 'price_base': '10', 'price_per_mile': '15', 'tier':'box', 'rating': '4'},
-    '4': {'name': 'david', 'location':'232 Princess Drive, New York, NY', 'price_base': '10', 'price_per_mile': '25', 'tier':'moving', 'rating': '3'},
-    '5': {'name': 'steve', 'location':'43 Meadowbrook Ave, New York, NY', 'price_base': '10', 'price_per_mile': '20', 'tier': 'moving', 'rating': '5'},
-    '6': {'name': 'bob', 'location': '8 Jones Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup', 'rating': '5'},
-    '7': {'name': 'doug', 'location':'659 North Glenlake Ave, New York, NY', 'price_base': '10', 'price_per_mile': '5', 'tier': 'pickup', 'rating': '4'},
-    '8': {'name': 'mary', 'location':'7010 Canal Drive, New York, NY', 'price_base': '10', 'price_per_mile': '10', 'tier': 'cargo', 'rating': '5'},
-    '9': {'name': 'jane', 'location': '91 Hilltop Ave, New York, NY', 'price_base': '10', 'price_per_mile': '12', 'tier':'box', 'rating': '3'},
-}
-
-Users = {
-    '1': {'name': 'tom', 'location':'11 East Loop Road, New York, NY'},
-    '2': {'name': 'nicole', 'location':'14 W. Clinton Street, New York, NY'},
-}
-
 LOGGED_IN_USER = '1';
 
 @app.route('/')
@@ -43,33 +27,89 @@ def hello():
 	return 'WeMove Backend API!'
 
 
-# Todo
-# shows a single todo item and lets you delete a todo item
+# DriverInfo
+# gets a specified driver's name, rating, and how long it will take for them to reach you
 class DriverInfo(Resource):
     def get(self, driverId):
-        dist = gmaps.distance_matrix(Users[LOGGED_IN_USER]['location'], Drivers[driverId]['location'], mode='driving')
+        loggedInUser = User.query.filter_by(id=LOGGED_IN_USER).first()
+        driverRequest = Driver.query.filter_by(id=driverId).first()
+        dist = gmaps.distance_matrix(loggedInUser.location, driverRequest.location, mode='driving')
 
         resp = {
             'time' : dist['rows'][0]['elements'][0]['duration']['text'],
             'driver' : {
-                'name' : Drivers[driverId]['name'],
-                'rating' : Drivers[driverId]['rating']
+                'name' : driverRequest.name,
+                'rating' : driverRequest.rating
             }
         }
 
         return resp
+        
 
 # DriverList
 # shows a list of all Drivers, and lets you POST to add new tasks
 class DriverList (Resource):
     def get(self):
-        return Drivers
+        drivers = Driver.query.all()
+        loggedInUser = User.query.filter_by(id=LOGGED_IN_USER).first()
+        currentLoc = gmaps.geocode(loggedInUser.location)
+        
+        pickupId = getNearestDriver(currentLoc, Driver.query.filter_by(tier='pickup').all())
+        cargoId = getNearestDriver(currentLoc, Driver.query.filter_by(tier='cargo').all())
+        boxId = getNearestDriver(currentLoc, Driver.query.filter_by(tier='box').all())
+        movingId = getNearestDriver(currentLoc, Driver.query.filter_by(tier='moving').all())
+
+        pickup = Driver.query.filter_by(id=pickupId).first()
+        cargo = Driver.query.filter_by(id=cargoId).first()
+        box = Driver.query.filter_by(id=boxId).first()
+        moving = Driver.query.filter_by(id=movingId).first()
+        
+        resp = {
+            str(pickupId): {
+                "name": pickup.name,
+                "location": pickup.location,
+                "price_base": str(pickup.price_base),
+                "price_per_mile": str(pickup.price_per_mile),
+                "tier": pickup.tier,
+                "rating": pickup.rating
+            },
+            str(cargoId): {
+                "name": cargo.name,
+                "location": cargo.location,
+                "price_base": str(cargo.price_base),
+                "price_per_mile": str(cargo.price_per_mile),
+                "tier": cargo.tier,
+                "rating": cargo.rating
+            },
+            str(boxId): {
+                "name": box.name,
+                "location": box.location,
+                "price_base": str(box.price_base),
+                "price_per_mile": str(box.price_per_mile),
+                "tier": box.tier,
+                "rating": box.rating
+            },
+            str(movingId): {
+                "name": moving.name,
+                "location": moving.location,
+                "price_base": str(moving.price_base),
+                "price_per_mile": str(moving.price_per_mile),
+                "tier": moving.tier,
+                "rating": moving.rating
+            }
+        }
+        
+        return resp
 
     def post(self):
         data = request.get_json()
+#        print('in post')
+#        if not data:
+#            print('its none')
+#        print(data)
+#        print(data['current'])
         currentLoc = gmaps.reverse_geocode(data['current'])
 
-        #Users[LOGGED_IN_USER]['location'] = currentLoc[0]['formatted_address']
         loggedInUser = User.query.filter_by(id=LOGGED_IN_USER).update(dict(location=currentLoc[0]['formatted_address']))
         db.session.commit()
 
@@ -125,6 +165,18 @@ class DriverList (Resource):
 
         return resp
         
+# Requests
+# Handles any processes related to a move request such as rating a driver
+class RequestList(Resource):
+    def post(self):
+        data = request.get_json()
+        loggedInUser = User.query.filter_by(id=LOGGED_IN_USER).first()
+        req = Request('1', str(loggedInUser.id), str(data['driver']), str(data['rating']))
+        db.session.add(req)
+        db.session.commit()
+        return
+        
+        
 def getNearestDriver(loc, drivers):
     first = True
     for driver in drivers:
@@ -136,10 +188,12 @@ def getNearestDriver(loc, drivers):
             if (newDist < minDist):
                 minDist = newDist
                 driverId = driver.id
+        first = False
     return driverId
-        
+
 api.add_resource(DriverList , '/api/drivers')
 api.add_resource(DriverInfo, '/api/drivers/<driverId>')
+api.add_resource(RequestList, '/api/requests')
 
 
 if __name__ == '__main__':

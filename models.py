@@ -56,12 +56,16 @@ class Driver(BaseModel, db.Model):
 class Request(BaseModel, db.Model):
     """Model for the requests table"""
     __tablename__ = 'requests'
+    
+    def __init__(self, reqId=None, userId=None, driverId=None, rating=None):
+        self.reqId = reqId
+        self.userId = userId
+        self.driverId = driverId
+        self.rating = rating
 
     id = db.Column(db.Integer, primary_key = True)
     userId = db.Column(db.Unicode(255))
     driverId = db.Column(db.Unicode(255))
-    price = db.Column(db.Integer)
-    source = db.Column(db.Unicode(255))
-    destination = db.Column(db.Unicode(255))
+    rating = db.Column(db.Unicode(255))
 
 
