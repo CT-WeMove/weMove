@@ -5,6 +5,7 @@ import Map from './components/Map'
 import PickVehicle from './components/PickVehicle'
 import DriverMatched from './components/DriverMatched'
 import OnTrip from './components/OnTrip'
+import RateDriver from './components/RateDriver'
 
 export default StackNavigator({
   Home: {
@@ -21,6 +22,9 @@ export default StackNavigator({
   },
   OnTrip: {
     screen: OnTrip
+  },
+  RateDriver: {
+    screen: RateDriver
   }
 }, {
   headerMode: 'none'

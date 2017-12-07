@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { logoStyle } from '../Styles/Styles'
 
 import Svg, {
@@ -9,7 +9,7 @@ import Svg, {
 } from 'react-native-svg';
 
 export default (props) => (
-  <View style={logoStyle.container}>
+  <View style={logoStyle.logo}>
     <Svg
       width="152"
       height="152"

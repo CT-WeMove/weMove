@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 
-import { mainStyle } from '../Styles/Styles'
+import { mainStyle, tripStyles } from '../Styles/Styles'
 import CarouselStyles from '../Styles/CarouselStyles'
 
 import PickupBIG from './vehicles/PickupBIG'
@@ -20,11 +20,17 @@ class DriverMatched extends Component {
     }
     this._getSVG = this._getSVG.bind(this)
     this._confirmDriver = this._confirmDriver.bind(this)
+    this._cancel = this._cancel.bind(this)
   }
   _confirmDriver() {
     this.props.navigation.navigate('OnTrip', {
-      state: this.state
+      svg: this.state.svg,
+      driver: this.state.driver,
+      vehicle: this.state.vehicle
     })
+  }
+  _cancel() {
+    this.props.navigation.navigate('Map')
   }
   _getSVG(vehicleName) {
     switch (vehicleName) {
@@ -50,31 +56,48 @@ class DriverMatched extends Component {
       driver: {
         name: state.params.driver.name[0].toUpperCase() + state.params.driver.name.slice(1),
         rating: state.params.driver.rating
-      }
+      },
+      time: state.params.time
     })
   }
   render() {
     return (
-      <View style={mainStyle.container}>
-        <Text style={mainStyle.sectionHeading}>DRIVER MATCHED</Text>
+      <View style={tripStyles.container}>
+        <Text style={tripStyles.sectionHeading}>DRIVER MATCHED!</Text>
 
-        <View>
-          <Text>{this.state.driver.name}</Text>
+        <View style={tripStyles.centeredContainer}>
+          <Text style={tripStyles.titleTop}>{this.state.driver.name}</Text>
           <Text>{this.state.driver.rating} out of 5 stars</Text>
+          <Text>{this.state.time} away</Text>
         </View>
-        <View>
+
+        <View style={tripStyles.hr} />
+
+        <View style={tripStyles.centeredContainer}>
           {this.state.svg}
-          <Text>{this.state.vehicle.title}</Text>
+          <Text style={tripStyles.titleBottom}>{this.state.vehicle.title}</Text>
         </View>
-        <View>
-          <Text style={CarouselStyles.title}>${this.state.vehicle.total}</Text>
+
+        <View style={tripStyles.hr} />
+
+        <View style={tripStyles.centeredContainer}>
+          <Text style={tripStyles.titleTop}>${this.state.vehicle.total}</Text>
           <Text style={CarouselStyles.subtitle}>${this.state.vehicle.base} base + ${this.state.vehicle.per_mile} / mile</Text>
         </View>
 
-        <CustomButton
-          _onButtonPress={this._confirmDriver}
-          text='CONFIRM YOUR TRIP'
-        />
+        <View style={tripStyles.centeredContainer}>
+          <CustomButton
+            _onButtonPress={this._confirmDriver}
+            text="CONFIRM & START TRIP"
+            inverse={false}
+          />
+          <CustomButton
+            _onButtonPress={this._cancel}
+            text="CANCEL"
+            inverse={true}
+          />
+        </View>
+
 
       </View>
     )

@@ -9,6 +9,7 @@
     "react-native-geocoding": "^0.2.0",
     "react-native-maps": "^0.17.1",
     "react-native-snap-carousel": "^3.4.0",
+    "react-native-star-rating": "^1.0.8",
     "react-navigation": "^1.0.0-beta.19"
   }
 }

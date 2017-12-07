@@ -14,25 +14,25 @@ function wp(percentage) {
   return Math.round(value);
 }
 const slideHeight = viewportHeight * 0.5
-  , slideWidth = wp(70)
+  , slideWidth = wp(75)
   , itemHorizontalMargin = wp(1);
 
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
 const entryBorderRadius = 8
-  , slidePadding = 18
-  , viewPadding = 50;
+  , slidePadding = 15
+  , viewPadding = viewportHeight * 0.2;
 
 export default StyleSheet.create({
   slideInnerContainer: {
     backgroundColor: colors.background1,
     width: itemWidth,
-    height: slideHeight,
+    height: '100%',
     paddingHorizontal: itemHorizontalMargin,
     paddingTop: slidePadding,
     paddingBottom: slidePadding, // needed for shadow,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center'
   },
   // imageContainer: {
@@ -83,30 +83,29 @@ export default StyleSheet.create({
     color: colors.black,
     fontSize: 20,
     letterSpacing: 0.5,
-    marginTop: slidePadding,
-    marginBottom: slidePadding
   },
   destination: {
     color: colors.black,
     fontSize: 20,
     letterSpacing: 0.5,
-    marginTop: viewPadding + 5,
-    marginBottom: viewPadding - 5
+    // paddingTop: viewPadding,
+    // paddingBottom: 10
   },
   subtitle: {
     color: colors.gray,
     fontSize: 10,
     letterSpacing: 0.5,
-    marginBottom: slidePadding
+    // paddingBottom: slidePadding
   },
   hr: {
     borderBottomWidth: 1,
     borderBottomColor: colors.black,
     width: itemWidth * 0.75,
-    marginTop: slidePadding,
-    marginBottom: slidePadding
+    // marginTop: slidePadding,
+    // marginBottom: slidePadding
   },
   buttonContainer: {
+    paddingTop: 50,
     paddingBottom: viewPadding
   }
 })

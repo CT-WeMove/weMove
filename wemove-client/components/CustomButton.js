@@ -9,11 +9,21 @@ export default (props) => {
     <TouchableOpacity
       onPress={props._onButtonPress}
     >
-      <View style={mainStyle.accentButtonView}>
-        <Text
-          style={mainStyle.accentButtonText}>{props.text}
-        </Text>
-      </View>
+      {
+        props.inverse ? (
+          <View style={mainStyle.inverseButtonView}>
+            <Text
+              style={mainStyle.inverseButtonText}>{props.text}
+            </Text>
+          </View>
+        ) : (
+            <View style={mainStyle.accentButtonView}>
+              <Text
+                style={mainStyle.accentButtonText}>{props.text}
+              </Text>
+            </View>
+          )
+      }
     </TouchableOpacity>
   )
 }

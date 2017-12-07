@@ -15,16 +15,9 @@ class HomeScreen extends Component {
     }
   }
   loadAssets = () => {
-    Expo.Font.loadAsync({
-      'Bauhaus93': require('../assets/Bauhaus-93_6274.ttf')
+    this.setState({
+      assetsLoaded: true
     })
-      .then(() => {
-        this.setState({
-          assetsLoaded: true
-        })
-      })
-      .catch(console.error)
-
   }
   _onButtonPress = () => {
     this.props.navigation.navigate('Map')
@@ -45,6 +38,7 @@ class HomeScreen extends Component {
                 <CustomButton
                   text="GET A MOVER"
                   _onButtonPress={this._onButtonPress}
+                  inverse={false}
                 />
               </View>
             ) : (

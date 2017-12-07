@@ -89,7 +89,9 @@ class PickVehicle extends Component {
         {
           Array.isArray(this.state.entries) ? (
             <View style={mainStyle.container}>
-              <Text style={CarouselStyles.destination}>{this.state.destination} is {this.state.mileage} miles away.</Text>
+
+              <Text style={mainStyle.sectionHeading}>{this.state.destination} is {this.state.mileage} miles away.</Text>
+
               <Carousel
                 ref={c => { this._carousel = c }}
                 data={this.state.entries}
@@ -111,6 +113,7 @@ class PickVehicle extends Component {
                 <CustomButton
                   _onButtonPress={() => this.requestVehicle(this.state.entries[this.state.activeSlide])}
                   text={buttonText}
+                  inverse={false}
                 />
               </View>
             </View>
