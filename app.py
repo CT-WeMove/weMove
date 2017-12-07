@@ -1,6 +1,6 @@
 import logging
 import os
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restful import reqparse, abort, Api, Resource
 from models import db, Driver, User, Request
 import secrets
@@ -13,7 +13,6 @@ app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = secrets.get_database_uri()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 api = Api(app)
 
 gmaps = secrets.get_gmaps()
@@ -25,6 +24,11 @@ def hello():
 	return 'WeMove Backend API!'
 
 LOGGED_IN_USER = '1'
+
+@app.route('/ping')
+def ping():
+    return jsonify({'code': 'success'})
+
 
 # DriverInfo
 # gets a specified driver's name, rating, and how long it will take for them to reach you
