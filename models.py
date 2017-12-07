@@ -32,16 +32,28 @@ class BaseModel(db.Model):
 class User(BaseModel, db.Model):
     """Model for the user table"""
     __tablename__ = 'users'
+    
+    def __init__(self, name=None):
+        self.name = name
 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.Unicode(255))
     location = db.Column(db.Unicode(255))
+    width = db.Column(db.Integer)
+    height = db.Column(db.Integer)
+    picture = db.Column(db.Unicode(10000))
 
 
 class Driver(BaseModel, db.Model):
 
     """Model for the driver table"""
     __tablename__ = 'drivers'
+
+    def __init__(self, name=None, price_base=None, price_per_mile=None, tier=None):
+        self.name = name
+        self.price_base = price_base
+        self.price_per_mile = price_per_mile
+        self.tier = tier
 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.Unicode(255))
@@ -50,15 +62,16 @@ class Driver(BaseModel, db.Model):
     price_base = db.Column(db.Integer)
     price_per_mile = db.Column(db.Integer)
     rating = db.Column(db.Integer)
-
-
+    width = db.Column(db.Integer)
+    height = db.Column(db.Integer)
+    picture = db.Column(db.Unicode(10000))
+    
 
 class Request(BaseModel, db.Model):
     """Model for the requests table"""
     __tablename__ = 'requests'
     
-    def __init__(self, reqId=None, userId=None, driverId=None, rating=None):
-        self.reqId = reqId
+    def __init__(self, userId=None, driverId=None, rating=None):
         self.userId = userId
         self.driverId = driverId
         self.rating = rating

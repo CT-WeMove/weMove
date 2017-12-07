@@ -20,17 +20,17 @@ gmaps = secrets.get_gmaps()
 
 db.init_app(app)
 
-LOGGED_IN_USER = '1';
-
 @app.route('/')
 def hello():
 	return 'WeMove Backend API!'
 
+LOGGED_IN_USER = '1'
 
 # DriverInfo
 # gets a specified driver's name, rating, and how long it will take for them to reach you
 class DriverInfo(Resource):
     def get(self, driverId):
+        data = request.get_json()
         loggedInUser = User.query.filter_by(id=LOGGED_IN_USER).first()
         driverRequest = Driver.query.filter_by(id=driverId).first()
         dist = gmaps.distance_matrix(loggedInUser.location, driverRequest.location, mode='driving')
@@ -39,7 +39,10 @@ class DriverInfo(Resource):
             'time' : dist['rows'][0]['elements'][0]['duration']['text'],
             'driver' : {
                 'name' : driverRequest.name,
-                'rating' : driverRequest.rating
+                'rating' : driverRequest.rating,
+                'width' : driverRequest.width,
+                'height' : driverRequest.height,
+                'picture' : driverRequest.picture
             }
         }
 
@@ -50,6 +53,7 @@ class DriverInfo(Resource):
 # shows a list of all Drivers, and lets you POST to add new tasks
 class DriverList (Resource):
     def get(self):
+        data = request.get_json()
         drivers = Driver.query.all()
         loggedInUser = User.query.filter_by(id=LOGGED_IN_USER).first()
         currentLoc = gmaps.geocode(loggedInUser.location)
@@ -103,14 +107,9 @@ class DriverList (Resource):
 
     def post(self):
         data = request.get_json()
-#        print('in post')
-#        if not data:
-#            print('its none')
-#        print(data)
-#        print(data['current'])
         currentLoc = gmaps.reverse_geocode(data['current'])
 
-        loggedInUser = User.query.filter_by(id=LOGGED_IN_USER).update(dict(location=currentLoc[0]['formatted_address']))
+        User.query.filter_by(id=LOGGED_IN_USER).update(dict(location=currentLoc[0]['formatted_address']))
         db.session.commit()
 
         dist = gmaps.distance_matrix(currentLoc[0]['formatted_address'], data['destination'], mode='driving')
@@ -171,11 +170,54 @@ class RequestList(Resource):
     def post(self):
         data = request.get_json()
         loggedInUser = User.query.filter_by(id=LOGGED_IN_USER).first()
-        req = Request('1', str(loggedInUser.id), str(data['driver']), str(data['rating']))
+        req = Request(str(loggedInUser.id), str(data['driver']), str(data['rating']))
         db.session.add(req)
         db.session.commit()
         return
+
+# UserSignup
+# Handles user registration
+class UserSignup(Resource):
+
+    def post(self):
+        data = request.get_json()
+        newUser = User(data['name'])
+        db.session.add(newUser)
+        db.session.commit()
+        return newUser.id
         
+    def put(self):
+        data = request.get_json()
+        newUser = User.query.filter_by(id=LOGGED_IN_USER).update(dict(width=data['width'], height=data['height'], picture=data['picture']))
+        db.session.commit()
+        return
+
+# DriverSignup
+# Handles driver registration
+class DriverSignup(Resource):
+
+    def post(self):
+        data = request.get_json()
+        newDriver = Driver(data['name'], data['price_base'], data['price_per_mile'], data['tier'])
+        db.session.add(newDriver)
+        db.session.commit()
+        return newDriver.id
+        
+    def put(self):
+        data = request.get_json()
+        driverLoc = '35-40 21st St, Long Island City, NY 11106'
+        Driver.query.filter_by(id=data['id']).update(dict(location=driverLoc, rating=3, width=data['width'], height=data['height'], picture=data['picture']))
+        db.session.commit()
+        driverInfo = Driver.query.filter_by(id=data['id']).first()
+        resp = {
+            "name": driverInfo.name,
+            "rating": driverInfo.rating,
+            "width": driverInfo.width,
+            "height": driverInfo.height,
+            "picture": driverInfo.picture
+        }
+        
+        return resp
         
 def getNearestDriver(loc, drivers):
     first = True
@@ -194,6 +236,8 @@ def getNearestDriver(loc, drivers):
 api.add_resource(DriverList , '/api/drivers')
 api.add_resource(DriverInfo, '/api/drivers/<driverId>')
 api.add_resource(RequestList, '/api/requests')
+api.add_resource(UserSignup, '/api/users/signup')
+api.add_resource(DriverSignup, '/api/drivers/signup')
 
 
 if __name__ == '__main__':
