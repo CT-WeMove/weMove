@@ -9,7 +9,7 @@ Flask-Script==2.0.6
 Flask-SQLAlchemy==2.3.2
 googlemaps==2.5.1
 Jinja2==2.9.6
-Mako==1.0.7
+Mako==1.2.2
 MarkupSafe==1.0
 numpy==1.13.3
 olefile==0.44
